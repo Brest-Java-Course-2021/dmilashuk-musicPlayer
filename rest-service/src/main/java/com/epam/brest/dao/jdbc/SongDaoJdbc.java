@@ -4,6 +4,7 @@ import com.epam.brest.dao.SongDao;
 import com.epam.brest.model.Song;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,17 @@ public class SongDaoJdbc implements SongDao {
     }
 
     @Override
-    public List<Song> findByPlaylistId(Integer playlistId) {
+    public List<Song> findByFilter(String singer) {
+        return null;
+    }
+
+    @Override
+    public List<Song> findByFilter(Date date1, Date date2) {
+        return null;
+    }
+
+    @Override
+    public List<Song> findByFilter(String singer, Date date1, Date date2) {
         return null;
     }
 
@@ -39,5 +50,4 @@ public class SongDaoJdbc implements SongDao {
     public Integer delete(Song songId) {
         return null;
     }
-
 }
