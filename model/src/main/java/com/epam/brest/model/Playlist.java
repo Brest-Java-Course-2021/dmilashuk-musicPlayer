@@ -8,7 +8,7 @@ public class Playlist {
 
     private Integer playlistId;
 
-    private String tittle;
+    private String playlistName;
 
     private List<Song> songs;
 
@@ -20,12 +20,12 @@ public class Playlist {
         this.playlistId = playlistId;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getPlaylistName() {
+        return playlistName;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setPlaylistName(String playlistName) {
+        this.playlistName = playlistName;
     }
 
     public List<Song> getSongs() {
@@ -54,12 +54,21 @@ public class Playlist {
         if (!(o instanceof Playlist)) return false;
         Playlist playlist = (Playlist) o;
         return Objects.equals(playlistId, playlist.playlistId) &&
-                Objects.equals(tittle, playlist.tittle) &&
+                Objects.equals(playlistName, playlist.playlistName) &&
                 Objects.equals(songs, playlist.songs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playlistId, tittle, songs);
+        return Objects.hash(playlistId, playlistName, songs);
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist{" +
+                "playlistId=" + playlistId +
+                ", playlistName='" + playlistName + '\'' +
+                ", songs=" + songs +
+                '}';
     }
 }

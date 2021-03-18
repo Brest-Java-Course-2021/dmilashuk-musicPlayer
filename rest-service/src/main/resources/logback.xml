@@ -14,8 +14,8 @@
         </encoder>
     </appender>
 
-    <logger name="org.epam" level = "DEBUG">
-        <appender-ref ref="FILE"/>
+    <logger name="com.epam" level = "DEBUG">
+        <appender-ref ref="DEBUG"/>
     </logger>
 
     <root level="INFO">
