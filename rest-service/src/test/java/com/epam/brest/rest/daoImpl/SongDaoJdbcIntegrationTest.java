@@ -1,6 +1,5 @@
 package com.epam.brest.rest.daoImpl;
 
-import com.epam.brest.rest.daoImpl.SongDaoJdbc;
 import com.epam.brest.rest.config.RestDbConfigTest;
 import com.epam.brest.model.Song;
 import org.junit.jupiter.api.Test;
@@ -53,9 +52,12 @@ public class SongDaoJdbcIntegrationTest {
                     executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     })
     public void findByFilterTest() {
-        Date startDate = new Date(new GregorianCalendar(1980, Calendar.JANUARY,1).getTime().getTime());
+        Date startDate = new Date(new GregorianCalendar(1980, Calendar.AUGUST,22).getTime().getTime());
         Date endDate = new Date(new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime().getTime());
         assertEquals(2, songDaoJdbc.findAllByFilter(startDate, endDate).size());
+        assertEquals(1,songDaoJdbc.findAllByFilter(startDate, null).size());
+        assertEquals(1,songDaoJdbc.findAllByFilter(null, startDate).size());
+        assertEquals(1,songDaoJdbc.findAllByFilter(startDate, startDate).size());
     }
 
     @Test
