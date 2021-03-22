@@ -26,7 +26,6 @@ public class SongController {
         if(startDate != null || endDate != null){
             LOGGER.debug("SongController: findAll({},{})", startDate, endDate);
             List<Song> list = songDaoJdbc.findAllByFilter(startDate, endDate);
-            System.out.println(list);
             return list;
         }
         LOGGER.debug("SongController: findAll()");

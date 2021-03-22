@@ -4,25 +4,29 @@ import com.epam.brest.model.Song;
 import com.epam.brest.rest.config.RestDbConfigTest;
 import com.epam.brest.rest.config.RestWebConfig;
 import com.epam.brest.rest.daoImpl.SongDaoJdbc;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import java.lang.reflect.Field;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 
@@ -31,50 +35,100 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {RestWebConfig.class, RestDbConfigTest.class})
 class SongControllerIntegrationTest {
 
-    private final Song song;
-
     private final List<Song> list;
 
-    private WebApplicationContext wac;
+    private final Song song;
 
-    private SongDaoJdbc songDaoJdbc = Mockito.mock(SongDaoJdbc.class);
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Mock
+    private SongDaoJdbc songDaoJdbc;
 
     private MockMvc mockMvc;
 
-    public SongControllerIntegrationTest(WebApplicationContext wac) throws Exception {
-        Song song = new Song();
-        song.setSongId(1);
-        song.setSinger("Singer");
-        song.setAlbum("Album");
-        song.setTittle("Tittle");
-        this.song = song;
-
+    {
+        Song song1 = new Song();
+        song1.setSinger("Singer1");
+        Song song2 = new Song();
+        song2.setSinger("Singer2");
         List<Song> list = new ArrayList<>();
-        list.add(song);
-        list.add(new Song());
+        list.add(song1);
+        list.add(song2);
         this.list = list;
-
-        this.wac = wac;
-        SongController songController = wac.getBean(SongController.class);
-        Field songDaoJdbc = songController.getClass().getDeclaredField("songDaoJdbc");
-        songDaoJdbc.setAccessible(true);
-        songDaoJdbc.set(songController, this.songDaoJdbc);
+        this.song = song1;
     }
 
     @BeforeEach
-    public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    public void setup(){
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(new SongController(songDaoJdbc)).build();
     }
 
     @Test
-    void findAll() throws Exception {
-        Mockito.when(this.songDaoJdbc.findAll()).thenReturn(list);
-        mockMvc.perform(
-                MockMvcRequestBuilders.get("/songs")
+    void findAllWithoutRequestParamTest() throws Exception {
+        when(this.songDaoJdbc.findAll()).thenReturn(list);
+        String responseBody = mockMvc.perform(get("/songs")
         ).andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$[0].singer").value("Singer"));
+                .andReturn().getResponse().getContentAsString();
+        List<Song> responseList = objectMapper.readValue(
+                responseBody,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Song.class)
+        );
+
+        assertEquals(this.list, responseList);
+        verify(songDaoJdbc).findAll();
+        verifyNoMoreInteractions(songDaoJdbc);
+    }
+
+    @Test
+    void findAllWithRequestParamTest() throws Exception{
+        when(this.songDaoJdbc.findAllByFilter(any(Date.class), any(Date.class))).thenReturn(list);
+        String responseBody = mockMvc.perform(get("/songs?startDate=1992-03-12&endDate=2000-03-12")
+        ).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andReturn().getResponse().getContentAsString();
+        List<Song> responseList = objectMapper.readValue(
+                responseBody,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Song.class)
+        );
+
+        assertEquals(this.list, responseList);
+        verify(songDaoJdbc).findAllByFilter(any(Date.class), any(Date.class));
+        verifyNoMoreInteractions(songDaoJdbc);
+
+        when(this.songDaoJdbc.findAllByFilter(any(Date.class), isNull())).thenReturn(list);
+        String responseBody1 = mockMvc.perform(get("/songs?startDate=1992-03-12")
+        ).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andReturn().getResponse().getContentAsString();
+        List<Song> responseList1 = objectMapper.readValue(
+                responseBody1,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Song.class)
+        );
+
+        assertEquals(this.list, responseList1);
+        verify(songDaoJdbc).findAllByFilter(any(Date.class), isNull());
+        verifyNoMoreInteractions(songDaoJdbc);
+
+        when(this.songDaoJdbc.findAllByFilter(isNull(), any(Date.class))).thenReturn(list);
+        String responseBody2 = mockMvc.perform(get("/songs?endDate=1992-03-12")
+        ).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andReturn().getResponse().getContentAsString();
+        List<Song> responseList2 = objectMapper.readValue(
+                responseBody2,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Song.class)
+        );
+
+        assertEquals(this.list, responseList2);
+        verify(songDaoJdbc).findAllByFilter(any(Date.class), isNull());
+        verifyNoMoreInteractions(songDaoJdbc);
     }
 
     @Test
