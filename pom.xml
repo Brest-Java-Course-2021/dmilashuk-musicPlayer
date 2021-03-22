@@ -126,7 +126,6 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>1.4.200</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -211,6 +210,8 @@
                     <httpConnector>
                         <port>8080</port>
                     </httpConnector>
+                    <stopKey>stop</stopKey>
+                    <stopPort>8889</stopPort>
                 </configuration>
             </plugin>
 
