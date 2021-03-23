@@ -6,7 +6,7 @@ public class SpringMvcServletInitializer extends AbstractAnnotationConfigDispatc
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{RestDbConfig.class};
+        return new Class[]{RestRootConfig.class};
     }
 
     @Override

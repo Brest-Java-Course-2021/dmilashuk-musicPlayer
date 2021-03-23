@@ -16,10 +16,10 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySource("classpath:jdbc.properties")
-@ComponentScan(basePackages = "com.epam.brest.rest.daoImpl")
-public class RestDbConfig {
+@ComponentScan(basePackages = {"com.epam.brest.rest.daoImpl", "com.epam.brest.rest.serviceImpl"})
+public class RestRootConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestDbConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestRootConfig.class);
 
     @Bean
     public DataSource dataSource(){

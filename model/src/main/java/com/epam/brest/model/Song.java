@@ -21,7 +21,6 @@ public class Song {
     @Size(min = 1, max = 30, message = "Album should be between 1 and 60 characters")
     private String album;
 
-
     private Date realiseDate;
 
     public Integer getSongId() {

@@ -1,7 +1,10 @@
 package com.epam.brest.rest.controllers;
 
+import com.epam.brest.dao.SongDao;
 import com.epam.brest.model.Song;
 import com.epam.brest.rest.daoImpl.SongDaoJdbc;
+import com.epam.brest.rest.serviceImpl.SongServiceImpl;
+import com.epam.brest.service.SongService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/songs")
 public class SongController {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SongController.class);
 
-    private SongDaoJdbc songDaoJdbc;
+    private final SongService songService;
 
-    public SongController(SongDaoJdbc songDaoJdbc) {
-        this.songDaoJdbc = songDaoJdbc;
+    public SongController(SongService songService) {
+        this.songService = songService;
     }
 
     @GetMapping
@@ -25,17 +29,16 @@ public class SongController {
                               @RequestParam (name = "endDate", required = false) Date endDate){
         if(startDate != null || endDate != null){
             LOGGER.debug("SongController: findAll({},{})", startDate, endDate);
-            List<Song> list = songDaoJdbc.findAllByFilter(startDate, endDate);
-            return list;
+            return songService.findAllByFilter(startDate, endDate);
         }
         LOGGER.debug("SongController: findAll()");
-        return songDaoJdbc.findAll();
+        return songService.findAll();
     }
 
     @GetMapping("/withoutPlaylist/{playlistId}")
     public List<Song> findAllWithoutPlaylist(@PathVariable Integer playlistId){
         LOGGER.debug("SongController: findAllWithoutPlaylist({})", playlistId);
-        return songDaoJdbc.findAllWithoutPlaylist(playlistId);
+        return songService.findAllWithoutPlaylist(playlistId);
     }
 
 }

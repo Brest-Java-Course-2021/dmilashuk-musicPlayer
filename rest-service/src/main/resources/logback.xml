@@ -15,7 +15,7 @@
     </appender>
 
     <logger name="com.epam" level = "DEBUG">
-        <appender-ref ref="DEBUG"/>
+        <appender-ref ref="FILE"/>
     </logger>
 
     <root level="INFO">
