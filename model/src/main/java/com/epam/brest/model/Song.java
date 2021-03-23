@@ -1,5 +1,8 @@
 package com.epam.brest.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.sql.Date;
 import java.util.Objects;
 
@@ -7,11 +10,17 @@ public class Song {
 
     private Integer songId;
 
+    @NotBlank(message = "Singer should not be empty")
+    @Size(min = 1, max = 30, message = "Singer should be between 1 and 30 characters")
     private String singer;
 
+    @NotBlank(message = "Tittle should not be empty")
+    @Size(min = 1, max = 60, message = "Singer should be between 1 and 60 characters")
     private String tittle;
 
+    @Size(min = 1, max = 30, message = "Album should be between 1 and 60 characters")
     private String album;
+
 
     private Date realiseDate;
 
