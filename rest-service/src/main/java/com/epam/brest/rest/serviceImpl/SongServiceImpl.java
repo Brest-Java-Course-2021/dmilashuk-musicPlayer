@@ -21,7 +21,6 @@ public class SongServiceImpl implements SongService {
 
     private final SongDao songDao;
 
-    @Autowired
     public SongServiceImpl(SongDao songDao) {
         this.songDao = songDao;
     }
