@@ -87,15 +87,9 @@ public class SongDaoJdbcIntegrationTest {
         song1.setTittle("New tittle");
         assertEquals(6, songDaoJdbc.create(song1));
         Song song2 = new Song();
-        song2.setSinger("Busova");
+        song2.setSinger("Metallica");
+        song2.setTittle("Nothing else matters");
         assertThrows(IllegalArgumentException.class, () -> songDaoJdbc.create(song2));
-        Song song3 = new Song();
-        song3.setTittle("Polovinu");
-        assertThrows(IllegalArgumentException.class, () -> songDaoJdbc.create(song3));
-        Song song4 = new Song();
-        song4.setSinger("Metallica");
-        song4.setTittle("Nothing else matters");
-        assertThrows(IllegalArgumentException.class, () -> songDaoJdbc.create(song4));
     }
 
     @Test
@@ -113,15 +107,9 @@ public class SongDaoJdbcIntegrationTest {
         assertEquals(1, songDaoJdbc.update(song1));
         assertEquals("Алла Пугачева",songDaoJdbc.findById(2).orElseThrow().getSinger());
         Song song2 = new Song();
-        song2.setSinger("Busova");
+        song2.setSinger("Metallica");
+        song2.setTittle("Nothing else matters");
         assertThrows(IllegalArgumentException.class, () -> songDaoJdbc.update(song2));
-        Song song3 = new Song();
-        song3.setTittle("Polovinu");
-        assertThrows(IllegalArgumentException.class, () -> songDaoJdbc.update(song3));
-        Song song4 = new Song();
-        song4.setSinger("Metallica");
-        song4.setTittle("Nothing else matters");
-        assertThrows(IllegalArgumentException.class, () -> songDaoJdbc.update(song4));
     }
 
     @Test

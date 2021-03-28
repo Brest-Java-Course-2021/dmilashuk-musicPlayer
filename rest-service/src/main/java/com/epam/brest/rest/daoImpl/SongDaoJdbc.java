@@ -77,7 +77,7 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
     @Override
     public List<Song> findAllWithoutPlaylist(Integer playlistId) {
         LOGGER.debug("SongDaoJdbc: findAllWithoutPlaylist({})",playlistId);
-        return template.query(sqlFindAllSongWithoutPlaylist, songRowMapper);
+        return template.query(sqlFindAllSongWithoutPlaylist,new MapSqlParameterSource("PLAYLIST_ID", playlistId), songRowMapper);
     }
 
     @Override
@@ -108,7 +108,6 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
     @Override
     public Integer create(Song song) {
         LOGGER.debug("SongDaoJdbc: create({})",song);
-        checkingThatSingerAndTittleIsNotNull(song);
         checkingThatSongIsUnique(song);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -127,7 +126,6 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
     @Override
     public Integer update(Song song) {
         LOGGER.debug("SongDaoJdbc: update({})",song);
-        checkingThatSingerAndTittleIsNotNull(song);
         checkingThatSongIsUnique(song);
 
         SqlParameterSource parameterSource = new MapSqlParameterSource()
@@ -153,13 +151,6 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
         if (!checkWhatSongUnique){
             LOGGER.warn("The same song is already exist {}", song);
             throw new IllegalArgumentException("Song is already exist");
-        }
-    }
-
-    private void checkingThatSingerAndTittleIsNotNull(Song song){
-        if(song.getSinger() == null || song.getTittle() == null){
-            LOGGER.warn("Song's fields singer or tittle may not be null");
-            throw new  IllegalArgumentException("Fields SINGER and TITTLE may not be null");
         }
     }
 }
