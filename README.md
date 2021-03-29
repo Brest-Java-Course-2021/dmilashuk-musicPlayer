@@ -17,3 +17,5 @@ From the same directory as your root pom.xml, type:
 mvn jetty:run
 ```
 This starts Jetty and serves up your project on [http://localhost:8080](http://localhost:8080).
+## Local tests with Postman
+You can import postman collection: [./documentation/music player.postman_collection.json](./documentation/music%20player.postman_collection.json).

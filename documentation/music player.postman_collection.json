@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "5ea3c4c0-33ac-4cb5-9cd1-e521f6d4e5a0",
+		"name": "music player",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "find all songs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					]
+				},
+				"description": "find all song"
+			},
+			"response": []
+		},
+		{
+			"name": "find songs by release date",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs?startDate=1990-01-01&endDate=2000-01-01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "1990-01-01"
+						},
+						{
+							"key": "endDate",
+							"value": "2000-01-01"
+						}
+					]
+				},
+				"description": "find song by realisr date"
+			},
+			"response": []
+		},
+		{
+			"name": "find songs without playlist songs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs/withoutPlaylist/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs",
+						"withoutPlaylist",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find song by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find song by id (NOT FOUND)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs/99",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs",
+						"99"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create song",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"singer\": \"New singer\",\n        \"tittle\": \"New tittle\",\n        \"album\": \"New album\",\n        \"realiseDate\": \"1992-03-12\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/songs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create song (NOT BLANK)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"tittle\": \"   \"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/songs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create song (BAD SIZE)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"singer\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"tittle\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"album\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"realiseDate\": \"1992-03-12\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/songs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create song (Not Unique)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"songId\": 2,\n        \"singer\": \"Michael Jackson\",\n        \"tittle\": \"Billie jean\",\n        \"album\": \"Thriller\",\n        \"realiseDate\": \"1983-01-02\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/songs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update song",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"songId\": 1,\n        \"singer\": \"New singer1\",\n        \"tittle\": \"New tittle1\",\n        \"album\": \"New album1\",\n        \"realiseDate\": \"1992-03-121\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/songs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete song",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
