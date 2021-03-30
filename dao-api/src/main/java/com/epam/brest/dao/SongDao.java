@@ -1,7 +1,7 @@
 package com.epam.brest.dao;
 import com.epam.brest.model.Song;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
