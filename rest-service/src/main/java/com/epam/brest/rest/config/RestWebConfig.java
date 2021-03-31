@@ -37,6 +37,7 @@ public class RestWebConfig implements WebMvcConfigurer {
 
         return objectMapper;
     }
+
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
         var mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
@@ -48,4 +49,5 @@ public class RestWebConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(mappingJackson2HttpMessageConverter());
     }
+
 }

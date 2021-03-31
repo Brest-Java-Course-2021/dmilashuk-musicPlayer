@@ -1,7 +1,6 @@
 package com.epam.brest.model;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,6 +19,7 @@ public class Song {
     @Size(min = 1, max = 30, message = "Album should be between 1 and 60 characters")
     private String album;
 
+    @PastOrPresent(message = "Realise date should be past or present")
     private Date realiseDate;
 
     public Integer getSongId() {

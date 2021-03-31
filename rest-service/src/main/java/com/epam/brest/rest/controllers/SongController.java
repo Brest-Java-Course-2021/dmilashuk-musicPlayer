@@ -4,6 +4,7 @@ import com.epam.brest.model.Song;
 import com.epam.brest.service.SongService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -29,14 +27,16 @@ public class SongController {
         this.songService = songService;
     }
 
-    //TODO add not found responses
+    //TODO add not found responses and postman requests
 
     @GetMapping
-    public ResponseEntity<List<Song>> findAll(@RequestParam (name = "startDate", required = false) String stringStartDate,
-                                              @RequestParam (name = "endDate", required = false) String stringEndDate) throws ParseException {
+    public ResponseEntity<List<Song>> findAll(@RequestParam(name = "startDate", required = false)
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                      Date startDate,
+                                              @RequestParam(name = "endDate", required = false)
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                      Date endDate) {
 
-        Date startDate = parsDate(stringStartDate);
-        Date endDate = parsDate(stringEndDate);
         if(startDate != null || endDate != null){
             LOGGER.debug("SongController: findAll({},{})", startDate, endDate);
             return new ResponseEntity<>(songService.findAllByFilter(startDate, endDate), HttpStatus.OK);
@@ -83,9 +83,4 @@ public class SongController {
         return new ResponseEntity<>(songService.delete(songId), HttpStatus.OK);
     }
 
-    private Date parsDate(String date) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        return dateFormat.parse(date);
-    }
 }
