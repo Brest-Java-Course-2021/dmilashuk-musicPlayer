@@ -20,10 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -110,6 +107,16 @@ class SongControllerIntegrationTest {
     }
 
     @Test
+    public void findAllWithRequestParamNotFoundTest() throws Exception {
+        when(songService.findAllByFilter(any(Date.class),any(Date.class))).thenReturn(Collections.emptyList());
+        mockMvc.perform(get("/songs")
+                .param("startDate", "1992-03-12")
+                .param("endDate", "2000-03-12"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void findAllWithOnlyStartDateTest() throws Exception {
         when(this.songService.findAllByFilter(any(Date.class), isNull())).thenReturn(list);
         String responseBody1 = mockMvc.perform(get("/songs")
@@ -189,9 +196,7 @@ class SongControllerIntegrationTest {
 
         mockMvc.perform(get("/songs/{songId}", songId))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors").value("Song is not found"));
+                .andExpect(status().isNotFound());
         verify(songService).findById(songId);
         verifyNoMoreInteractions(songService);
     }
@@ -277,9 +282,7 @@ class SongControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").value(1));
+                .andExpect(status().isOk());
 
         verify(songService).update(song);
         verifyNoMoreInteractions(songService);
@@ -291,13 +294,10 @@ class SongControllerIntegrationTest {
         Integer songId = 1;
         mockMvc.perform(delete("/songs/{songId}", songId))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").value(1));
+                .andExpect(status().isOk());
 
         verify(songService).delete(songId);
         verifyNoMoreInteractions(songService);
     }
 
-    //TODO add test for id and date validation
 }
