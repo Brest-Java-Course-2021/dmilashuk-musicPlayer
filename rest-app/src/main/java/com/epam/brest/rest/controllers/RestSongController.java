@@ -1,13 +1,11 @@
 package com.epam.brest.rest.controllers;
 
 import com.epam.brest.model.Song;
-import com.epam.brest.rest.controllers.exception.ErrorResponse;
 import com.epam.brest.service.SongService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +19,13 @@ import java.util.Optional;
 @RestController
 @Validated
 @RequestMapping("/songs")
-public class SongController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SongController.class);
+public class RestSongController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestSongController.class);
 
     private final SongService songService;
 
-    public SongController(SongService songService) {
+    public RestSongController(SongService songService) {
         this.songService = songService;
     }
 
@@ -38,13 +37,13 @@ public class SongController {
                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                       Date endDate) {
         if(startDate != null || endDate != null){
-            LOGGER.debug("SongController: findAll({},{})", startDate, endDate);
+            LOGGER.debug("RestSongController: findAll({},{})", startDate, endDate);
             List<Song> result = songService.findAllByFilter(startDate, endDate);
             return result.isEmpty()
                     ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                     : new ResponseEntity<>(result, HttpStatus.OK);
         }
-        LOGGER.debug("SongController: findAll()");
+        LOGGER.debug("RestSongController: findAll()");
         List<Song> result = songService.findAll();
         return result.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
@@ -55,7 +54,7 @@ public class SongController {
     public ResponseEntity<List<Song>> findAllWithoutPlaylist(@PathVariable
                                                                  @Positive(message = "Path variable should be positive")
                                                                          Integer playlistId){
-        LOGGER.debug("SongController: findAllWithoutPlaylist({})", playlistId);
+        LOGGER.debug("RestSongController: findAllWithoutPlaylist({})", playlistId);
         List<Song> resultList = songService.findAllWithoutPlaylist(playlistId);
         return resultList.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
@@ -66,7 +65,7 @@ public class SongController {
     public ResponseEntity<Song> findById (@PathVariable
                                               @Positive(message = "Path variable should be positive")
                                                       Integer songId){
-        LOGGER.debug("SongController: findById({})", songId);
+        LOGGER.debug("RestSongController: findById({})", songId);
         Optional<Song> result = songService.findById(songId);
         return result.map(song -> new ResponseEntity<>(song, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -74,13 +73,13 @@ public class SongController {
 
     @PostMapping()
     public ResponseEntity<Integer> create (@Valid @RequestBody Song song){
-        LOGGER.debug("SongController: create({})", song);
+        LOGGER.debug("RestSongController: create({})", song);
         return new ResponseEntity<>(songService.create(song), HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<Object> update (@Valid @RequestBody Song song){
-        LOGGER.debug("SongController: update({})", song);
+        LOGGER.debug("RestSongController: update({})", song);
         return songService.update(song) !=0
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -90,8 +89,8 @@ public class SongController {
     public ResponseEntity<Object> delete (@PathVariable
                                                @Positive(message = "Path variable should be positive")
                                                        Integer songId){
-        LOGGER.debug("SongController: delete({})", songId);
-        return songService.delete(songId) !=0
+        LOGGER.debug("RestSongController: delete({})", songId);
+        return songService.delete(songId) != 0
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

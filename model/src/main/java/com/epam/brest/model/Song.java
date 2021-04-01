@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class Song {
 
+    @Positive(message = "Playlist id should be positive")
     private Integer songId;
 
     @NotBlank(message = "Singer should not be empty")

@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class SongServiceImplTest {
+class RestSongServiceImplTest {
 
     @Mock
     private SongDao songDao;
 
     @InjectMocks
-    private SongServiceImpl songService;
+    private RestSongServiceImpl songService;
 
     @Test
     void findAll() {

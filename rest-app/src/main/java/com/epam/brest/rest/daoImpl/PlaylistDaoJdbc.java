@@ -35,10 +35,8 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
 
     private NamedParameterJdbcTemplate template;
 
-    private final SongDaoJdbc songDaoJdbc;
-
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (template == null){
             LOGGER.error("NamedParameterJdbcTemplate was not injected");
             throw new BeanCreationException("NamedParameterJdbcTemplate is null on JdbcDepartmentDAO");}
@@ -47,7 +45,6 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
     @Autowired
     public PlaylistDaoJdbc(NamedParameterJdbcTemplate template, SongDaoJdbc songDaoJdbc) {
         this.template = template;
-        this.songDaoJdbc = songDaoJdbc;
     }
 
     @Value("${sql.playlist.findAll}")
@@ -98,7 +95,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
     @Override
     public Integer create(Playlist playlist) {
         LOGGER.debug("PlaylistDaoJdbc: create({})", playlist);
-        checkingThatPlaylistIsValid(playlist);
+        checkingThatPlaylistNameIsUnique(playlist);
 
         SqlParameterSource parameterSource = new MapSqlParameterSource("PLAYLIST_NAME", playlist.getPlaylistName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -112,7 +109,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
     @Override
     public Integer update(Playlist playlist) {
         LOGGER.debug("PlaylistDaoJdbc: update({})", playlist);
-        checkingThatPlaylistIsValid(playlist);
+        checkingThatPlaylistNameIsUnique(playlist);
 
         SqlParameterSource parameterSource = new MapSqlParameterSource("PLAYLIST_NAME", playlist.getPlaylistName())
                 .addValue("PLAYLIST_ID", playlist.getPlaylistId());
@@ -156,12 +153,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
         return template.update(sqlRemoveSongFromPlaylist, parameterSource);
     }
 
-    private void checkingThatPlaylistIsValid(Playlist playlist){
-
-        if (playlist.getPlaylistName() == null){
-            LOGGER.warn("Playlist's field tittle may not be null");
-            throw new  IllegalArgumentException("Field TITTLE may not be null");
-        }
+    private void checkingThatPlaylistNameIsUnique(Playlist playlist){
 
         boolean checkingThatPlaylistNameIsUnique = template.queryForObject(sqlCheckingThatPlaylistNameUnique,
                 new MapSqlParameterSource("PLAYLIST_NAME",
@@ -179,7 +171,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
             LOGGER.warn("Playlist with this id={} does not exist",playlistId);
             throw new IllegalArgumentException("Playlist does not exist");
         }
-        if(songDaoJdbc.findById(song_id).isEmpty()){
+        if(this.findById(song_id).isEmpty()){
             LOGGER.warn("Song with this id={} does not exist",song_id);
             throw new IllegalArgumentException("Song does not exist");
         }

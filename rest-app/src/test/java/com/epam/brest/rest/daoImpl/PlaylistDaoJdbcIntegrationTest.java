@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringJUnitConfig(RestDbConfigTest.class)
 public class PlaylistDaoJdbcIntegrationTest {
 
+    //TODO instead @Sql annotations add @Transaction
+
     @Autowired
     private PlaylistDaoJdbc playlistDaoJdbc;
 
@@ -64,7 +66,6 @@ public class PlaylistDaoJdbcIntegrationTest {
         Playlist playlist = new Playlist();
         playlist.setPlaylistName("Good playlist");
         assertEquals(3, playlistDaoJdbc.create(playlist));
-        assertThrows(IllegalArgumentException.class, () -> playlistDaoJdbc.create(new Playlist()));
         Playlist playlist1 = new Playlist();
         playlist1.setPlaylistName("Old playlist");
         assertThrows(IllegalArgumentException.class, () -> playlistDaoJdbc.create(playlist1));
@@ -86,7 +87,6 @@ public class PlaylistDaoJdbcIntegrationTest {
         playlist.setPlaylistId(999);
         playlist.setPlaylistName("Bad playlist");
         assertEquals(0, playlistDaoJdbc.update(playlist));
-        assertThrows(IllegalArgumentException.class, () -> playlistDaoJdbc.update(new Playlist()));
         Playlist playlist1 = new Playlist();
         playlist1.setPlaylistName("New playlist");
         playlist1.setPlaylistId(1);

@@ -2,7 +2,7 @@ package com.epam.brest.rest.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class SpringMvcServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class RestSpringMvcServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {

@@ -5,7 +5,6 @@ import com.epam.brest.model.Playlist;
 import com.epam.brest.service.PlaylistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +13,13 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class PlaylistServiceImpl implements PlaylistService {
+public class RestPlaylistServiceImpl implements PlaylistService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PlaylistServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestPlaylistServiceImpl.class);
 
     private final PlaylistDao playlistDao;
 
-    public PlaylistServiceImpl(PlaylistDao playlistDao) {
+    public RestPlaylistServiceImpl(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
 

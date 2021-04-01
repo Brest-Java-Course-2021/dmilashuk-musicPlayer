@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class SongServiceImpl implements SongService {
+public class RestSongServiceImpl implements SongService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SongServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestSongServiceImpl.class);
 
     private final SongDao songDao;
 
-    public SongServiceImpl(SongDao songDao) {
+    public RestSongServiceImpl(SongDao songDao) {
         this.songDao = songDao;
     }
 

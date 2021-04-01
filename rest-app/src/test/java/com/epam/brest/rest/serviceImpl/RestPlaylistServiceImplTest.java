@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class PlaylistServiceImplTest {
+class RestPlaylistServiceImplTest {
 
     @Mock
     private PlaylistDao playlistDao;
 
     @InjectMocks
-    private PlaylistServiceImpl playlistService;
+    private RestPlaylistServiceImpl playlistService;
 
 
     @Test

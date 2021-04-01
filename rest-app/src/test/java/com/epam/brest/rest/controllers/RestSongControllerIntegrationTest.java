@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @WebAppConfiguration
 @ContextConfiguration(classes = {RestWebConfig.class, RestRootConfig.class})
-class SongControllerIntegrationTest {
+class RestSongControllerIntegrationTest {
 
     private final List<Song> list;
 
@@ -52,17 +52,14 @@ class SongControllerIntegrationTest {
         song1.setTittle("Tittle");
         Song song2 = new Song();
         song2.setSinger("Singer2");
-        List<Song> list = new ArrayList<>();
-        list.add(song1);
-        list.add(song2);
-        this.list = list;
+        this.list = Arrays.asList(song1, song2);
         this.song = song1;
     }
 
     @BeforeEach
     public void setup(){
         this.mockMvc = MockMvcBuilders
-                .standaloneSetup(new SongController(songService))
+                .standaloneSetup(new RestSongController(songService))
                 .setControllerAdvice(new CustomGlobalExceptionHandler())
                 .build();
     }
@@ -243,7 +240,6 @@ class SongControllerIntegrationTest {
         errorSong.setAlbum(RandomStringUtils.randomAlphabetic(31));
         String requestBody = objectMapper.writeValueAsString(errorSong);
 
-
         mockMvc.perform(post("/songs")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
@@ -277,14 +273,14 @@ class SongControllerIntegrationTest {
     @Test
     public void updateTest() throws Exception {
         when(songService.update(any(Song.class))).thenReturn(1);
-        String requestBody = objectMapper.writeValueAsString(song);
+        String requestBody = objectMapper.writeValueAsString(this.song);
         mockMvc.perform(put("/songs")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        verify(songService).update(song);
+        verify(songService).update(this.song);
         verifyNoMoreInteractions(songService);
     }
 

@@ -1,6 +1,7 @@
 package com.epam.brest.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +9,11 @@ import java.util.Objects;
 
 public class Playlist {
 
+    @Positive(message = "Playlist id should be positive")
     private Integer playlistId;
 
-    @NotBlank(message = "PlaylistName should not be empty")
-    @Size(min = 1, max = 30, message = "PlaylistName should be between 1 and 30 characters")
+    @NotBlank(message = "Playlist name should not be empty")
+    @Size(min = 1, max = 30, message = "Playlist name should be between 1 and 30 characters")
     private String playlistName;
 
     private List<Song> songs;
