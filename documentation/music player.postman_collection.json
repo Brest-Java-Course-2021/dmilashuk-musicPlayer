@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "5ea3c4c0-33ac-4cb5-9cd1-e521f6d4e5a0",
-		"name": "music player",
+		"name": "music player: Rest-app",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -52,6 +52,64 @@
 					]
 				},
 				"description": "find song by realisr date"
+			},
+			"response": []
+		},
+		{
+			"name": "find songs by release date (BAD DATE)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs?startDate=1990-01-01&endDate=2001-02-95",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "1990-01-01"
+						},
+						{
+							"key": "endDate",
+							"value": "2001-02-95"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find songs by release date (NOT FOUND)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs?startDate=2000-01-01&endDate=2001-02-01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2000-01-01"
+						},
+						{
+							"key": "endDate",
+							"value": "2001-02-01"
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -117,6 +175,26 @@
 			"response": []
 		},
 		{
+			"name": "find song by id (BAD ID)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/songs/-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"songs",
+						"-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "create song",
 			"request": {
 				"method": "POST",
@@ -173,13 +251,13 @@
 			"response": []
 		},
 		{
-			"name": "create song (BAD SIZE)",
+			"name": "create song (BAD SIZE and bad date)",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\n        \"singer\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"tittle\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"album\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"realiseDate\": \"1992-03-12\"\n    }",
+					"raw": "    {\n        \"singer\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"tittle\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"album\": \"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\",\n        \"realiseDate\": \"2050-01-01\"\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -201,7 +279,7 @@
 			"response": []
 		},
 		{
-			"name": "create song (Not Unique)",
+			"name": "create song (NOT UNIQUE)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -262,14 +340,254 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/songs",
+					"raw": "http://localhost:8080/songs/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"songs"
+						"songs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find all playlists",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/playlists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find playlist by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/playlists/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find playlist by id (NOT FOUND)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/playlists/99",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists",
+						"99"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find playlist by id (BAD ID)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/playlists/-11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists",
+						"-11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create playlist",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"playlistId\": 1,\n        \"playlistName\": \"My playlist\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/playlists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create playlist (NOT BLANK)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"playlistId\": 1,\n        \"playlistName\": \"     \"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/playlists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create playlist (BAD SIZE)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"playlistId\": 1,\n        \"playlistName\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/playlists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create playlist (NOT UNIQUE)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"playlistId\": 1,\n        \"playlistName\": \"New playlist\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/playlists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update playlist",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"playlistId\": 1,\n        \"playlistName\": \"Same playlist\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/playlists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete playlist",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/playlists/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"playlists",
+						"1"
 					]
 				}
 			},
