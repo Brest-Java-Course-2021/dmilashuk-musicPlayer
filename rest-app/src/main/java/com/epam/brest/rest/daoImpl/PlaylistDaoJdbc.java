@@ -3,6 +3,7 @@ package com.epam.brest.rest.daoImpl;
 
 import com.epam.brest.dao.PlaylistDao;
 import com.epam.brest.model.Playlist;
+import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.model.Song;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlaylistDaoJdbc.class);
 
-    private NamedParameterJdbcTemplate template;
+    private final NamedParameterJdbcTemplate template;
 
     @Override
     public void afterPropertiesSet() {
@@ -43,7 +44,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
     }
 
     @Autowired
-    public PlaylistDaoJdbc(NamedParameterJdbcTemplate template, SongDaoJdbc songDaoJdbc) {
+    public PlaylistDaoJdbc(NamedParameterJdbcTemplate template) {
         this.template = template;
     }
 
@@ -78,9 +79,9 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
     private String sqlCheckingThatPlaylistNameUnique;
 
     @Override
-    public List<Playlist> findAll() {
+    public List<PlaylistDto> findAll() {
         LOGGER.debug("PlaylistDaoJdbc: findAll()");
-        return template.query(sqlFindAll, new PlaylistRowMapper());
+        return template.query(sqlFindAll, new PlaylistDtoRowMapper());
     }
 
     @Override
@@ -162,7 +163,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
         if (!checkingThatPlaylistNameIsUnique){
             LOGGER.warn("The same playlist is already exist {}", playlist);
             throw new IllegalArgumentException("Playlist is already exist");
-        };
+        }
     }
 
     private void checkingThatPlaylistAndSongExist(Integer playlistId, Integer song_id){
@@ -184,7 +185,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
         if(!(template.queryForObject(sqlCheckingUniquePlaylistSong, parameterSource, Integer.class) == 0)){
             LOGGER.warn("There is the same song({}) in this playlist({})", songId, playlistId);
             throw new  IllegalArgumentException("There is the same song in this playlist");
-        };
+        }
     }
 
     private static class PlaylistRowMapper implements RowMapper<Playlist>{
@@ -194,6 +195,21 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
             playlist.setPlaylistId(resultSet.getInt("PLAYLIST_ID"));
             playlist.setPlaylistName(resultSet.getString("PLAYLIST_NAME"));
             return playlist;
+        }
+    }
+
+    private static class PlaylistDtoRowMapper implements RowMapper<PlaylistDto>{
+        @Override
+        public PlaylistDto mapRow(ResultSet resultSet, int i) throws SQLException {
+            Playlist playlist = new Playlist();
+            playlist.setPlaylistId(resultSet.getInt("PLAYLIST_ID"));
+            playlist.setPlaylistName(resultSet.getString("PLAYLIST_NAME"));
+            Integer countOfSongs = resultSet.getInt("COUNT");
+
+            PlaylistDto playlistDto = new PlaylistDto();
+            playlistDto.setPlaylist(playlist);
+            playlistDto.setCountOfSongs(countOfSongs);
+            return playlistDto;
         }
     }
 

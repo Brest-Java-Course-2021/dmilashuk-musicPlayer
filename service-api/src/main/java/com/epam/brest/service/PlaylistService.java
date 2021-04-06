@@ -1,16 +1,17 @@
 package com.epam.brest.service;
 
 import com.epam.brest.model.Playlist;
+import com.epam.brest.model.PlaylistDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface PlaylistService {
     /**
-     * Find all existing playlists without songs
+     * Find all existing playlists with count of songs
      * @return playlist list
      */
-    List<Playlist> findAll();
+    List<PlaylistDto> findAll();
 
     /**
      * Find a playlist by id

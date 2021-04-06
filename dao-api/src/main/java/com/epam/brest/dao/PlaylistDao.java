@@ -9,10 +9,10 @@ import java.util.Optional;
 public interface PlaylistDao {
 
     /**
-     * Find all existing playlists without songs
-     * @return playlist list
+     * Find all existing playlists with count of songs
+     * @return playlistDto list
      */
-    List<Playlist> findAll();
+    List<PlaylistDto> findAll();
 
     /**
      * Find a playlist by id

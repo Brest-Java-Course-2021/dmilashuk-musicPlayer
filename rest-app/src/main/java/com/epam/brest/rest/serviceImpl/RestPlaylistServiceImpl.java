@@ -2,6 +2,7 @@ package com.epam.brest.rest.serviceImpl;
 
 import com.epam.brest.dao.PlaylistDao;
 import com.epam.brest.model.Playlist;
+import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.service.PlaylistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class RestPlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public List<Playlist> findAll() {
+    public List<PlaylistDto> findAll() {
         LOGGER.debug("PlaylistServiceImpl: findAll()");
         return playlistDao.findAll();
     }

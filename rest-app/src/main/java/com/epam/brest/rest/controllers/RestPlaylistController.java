@@ -1,6 +1,7 @@
 package com.epam.brest.rest.controllers;
 
 import com.epam.brest.model.Playlist;
+import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.service.PlaylistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,9 @@ public class RestPlaylistController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Playlist>> findAll(){
+    public ResponseEntity<List<PlaylistDto>> findAll(){
         LOGGER.debug("RestPlaylistController: findAll()");
-        List<Playlist> resultList = playlistService.findAll();
+        List<PlaylistDto> resultList = playlistService.findAll();
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 

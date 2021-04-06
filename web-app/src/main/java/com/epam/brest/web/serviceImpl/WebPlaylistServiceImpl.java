@@ -1,6 +1,7 @@
 package com.epam.brest.web.serviceImpl;
 
 import com.epam.brest.model.Playlist;
+import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.service.PlaylistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +44,11 @@ public class WebPlaylistServiceImpl implements PlaylistService, InitializingBean
     }
 
     @Override
-    public List<Playlist> findAll() {
+    public List<PlaylistDto> findAll() {
         LOGGER.debug("findAll()");
 
-        ParameterizedTypeReference<List<Playlist>> typeReference = new ParameterizedTypeReference<>(){};
-        ResponseEntity<List<Playlist>> responseEntity = restTemplate.exchange(rootUrl, HttpMethod.GET,null, typeReference);
+        ParameterizedTypeReference<List<PlaylistDto>> typeReference = new ParameterizedTypeReference<>(){};
+        ResponseEntity<List<PlaylistDto>> responseEntity = restTemplate.exchange(rootUrl, HttpMethod.GET,null, typeReference);
         return responseEntity.getBody();
     }
 

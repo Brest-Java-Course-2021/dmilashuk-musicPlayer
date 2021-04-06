@@ -28,15 +28,15 @@ public class WebPlaylistController {
     @GetMapping()
     public String findAll(Model model){
         LOGGER.debug("findAll()");
-        model.addAttribute("playlists", playlistService.findAll());
+        model.addAttribute("playlistsDto", playlistService.findAll());
         return "/playlists/playlists";
     }
 
     @GetMapping("/new")
     public final String goToCreateDepartmentPage(Model model) {
-        model.addAttribute("tittle","Creat new playlist");
-        model.addAttribute(new Playlist());
+        model.addAttribute("isNew",true);
         model.addAttribute("method","POST");
+        model.addAttribute(new Playlist());
         return "/playlists/playlist";
     }
 

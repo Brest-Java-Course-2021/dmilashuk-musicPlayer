@@ -2,6 +2,7 @@ package com.epam.brest.rest.serviceImpl;
 
 import com.epam.brest.dao.PlaylistDao;
 import com.epam.brest.model.Playlist;
+import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.model.Song;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,9 +29,9 @@ class RestPlaylistServiceImplTest {
 
     @Test
     void findAll() {
-        List<Playlist> playlistList= Collections.singletonList(new Playlist());
+        List<PlaylistDto> playlistList= Collections.singletonList(new PlaylistDto());
         when(playlistDao.findAll()).thenReturn(playlistList);
-        List<Playlist> resultList = playlistService.findAll();
+        List<PlaylistDto> resultList = playlistService.findAll();
 
         assertNotNull(resultList);
         assertEquals(playlistList, resultList);

@@ -1,6 +1,7 @@
 package com.epam.brest.rest.controllers;
 
 import com.epam.brest.model.Playlist;
+import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.rest.config.RestRootConfig;
 import com.epam.brest.rest.config.RestWebConfig;
 import com.epam.brest.rest.controllers.exception.CustomGlobalExceptionHandler;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +70,8 @@ class RestPlaylistControllerIntegrationTest {
 
     @Test
     public void findAllTest() throws Exception {
-        when(playlistService.findAll()).thenReturn(this.list);
+        List<PlaylistDto> listDto = Collections.singletonList(new PlaylistDto());
+        when(playlistService.findAll()).thenReturn(listDto);
 
         String responseBody = mockMvc.perform(get("/playlists"))
                 .andDo(print())
@@ -76,11 +79,11 @@ class RestPlaylistControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        List<Playlist> responseList = objectMapper.readValue(
+        List<PlaylistDto> responseList = objectMapper.readValue(
                 responseBody,
-                objectMapper.getTypeFactory().constructCollectionType(List.class, Playlist.class));
+                objectMapper.getTypeFactory().constructCollectionType(List.class, PlaylistDto.class));
 
-        assertEquals(this.list, responseList);
+        assertEquals(listDto, responseList);
 
         verify(playlistService).findAll();
         verifyNoMoreInteractions(playlistService);

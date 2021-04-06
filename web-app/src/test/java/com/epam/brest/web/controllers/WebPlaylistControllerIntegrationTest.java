@@ -1,6 +1,7 @@
 package com.epam.brest.web.controllers;
 
 import com.epam.brest.model.Playlist;
+import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.model.Song;
 import com.epam.brest.web.config.WebConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,7 +85,11 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
         Playlist playlist2 = createPlaylist(2,"Second playlist", null);
         Playlist playlist3 = createPlaylist(3,"Third playlist", null);
 
-        List<Playlist> songList = Arrays.asList(playlist1, playlist2, playlist3);
+        PlaylistDto playlistDto1 = createPlaylistDto(playlist1, 5);
+        PlaylistDto playlistDto2 = createPlaylistDto(playlist2, 10);
+        PlaylistDto playlistDto3 = createPlaylistDto(playlist3, 0);
+
+        List<PlaylistDto> songList = Arrays.asList(playlistDto1, playlistDto2, playlistDto3);
 
         mockServer.expect(once(), requestTo(new URI(playlistsUrl)))
                 .andExpect(method(HttpMethod.GET))
@@ -94,16 +99,23 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
                 );
 
         mockMvc.perform(MockMvcRequestBuilders.get("/playlists"))
-//                .andExpect(content().contentType("text/html;charset=UTF-8"))
+/*                .andExpect(content().contentType("text/html;charset=UTF-8"))*/
                 .andExpect(status().isOk())
                 .andExpect(view().name("/playlists/playlists"))
-                .andExpect(model().attribute("playlists", songList));
+                .andExpect(model().attribute("playlistsDto", songList));
 
         mockServer.verify();
     }
 
     @Test
-    void goToCreateDepartmentPage() {
+    void goToCreateDepartmentPage() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/playlists/new"))
+/*                .andExpect(content().contentType("text/html;charset=UTF-8"))*/
+                .andExpect(status().isOk())
+                .andExpect(view().name("/playlists/playlist"))
+                .andExpect(model().attribute("isNew", true))
+                .andExpect(model().attribute("method", "POST"))
+                .andExpect(model().attribute("playlist", new Playlist()));
     }
 
     @Test
@@ -118,5 +130,12 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
             playlist.setSongs(songList);
         }
         return playlist;
+    }
+
+    private PlaylistDto createPlaylistDto (Playlist playlist, Integer countOfSongs){
+        PlaylistDto playlistDto = new PlaylistDto();
+        playlistDto.setPlaylist(playlist);
+        playlistDto.setCountOfSongs(countOfSongs);
+        return playlistDto;
     }
 }

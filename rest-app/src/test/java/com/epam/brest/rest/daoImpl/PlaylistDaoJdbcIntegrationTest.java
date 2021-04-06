@@ -1,7 +1,7 @@
 package com.epam.brest.rest.daoImpl;
+
 import com.epam.brest.model.Playlist;
 import com.epam.brest.rest.config.RestDbConfigTest;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

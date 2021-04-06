@@ -6,7 +6,7 @@ public class PlaylistDto {
 
     private Playlist playlist;
 
-    private Double countOfSongs;
+    private Integer countOfSongs;
 
     public Playlist getPlaylist() {
         return playlist;
@@ -16,11 +16,11 @@ public class PlaylistDto {
         this.playlist = playlist;
     }
 
-    public Double getCountOfSongs() {
+    public Integer getCountOfSongs() {
         return countOfSongs;
     }
 
-    public void setCountOfSongs(Double countOfSongs) {
+    public void setCountOfSongs(Integer countOfSongs) {
         this.countOfSongs = countOfSongs;
     }
 
