@@ -32,9 +32,7 @@ public class RestPlaylistController {
     public ResponseEntity<List<Playlist>> findAll(){
         LOGGER.debug("RestPlaylistController: findAll()");
         List<Playlist> resultList = playlistService.findAll();
-        return resultList.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(resultList, HttpStatus.OK);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
     @GetMapping("/{playlistId}")
@@ -56,7 +54,7 @@ public class RestPlaylistController {
     @PutMapping
     public ResponseEntity<Object> update (@Valid @RequestBody Playlist playlist){
         LOGGER.debug("RestPlaylistController: update({})", playlist);
-        return playlistService.update(playlist) !=0
+        return playlistService.update(playlist) != 0
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
