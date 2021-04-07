@@ -232,9 +232,10 @@
                 <version>10.0.1</version>
                 <configuration>
                     <stopKey>stop</stopKey>
-                    <stopPort>8889</stopPort>
+                    <stopPort>8089</stopPort>
                 </configuration>
             </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

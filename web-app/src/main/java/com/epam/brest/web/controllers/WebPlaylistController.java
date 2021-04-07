@@ -6,12 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/playlists")
@@ -29,22 +26,42 @@ public class WebPlaylistController {
     public String findAll(Model model){
         LOGGER.debug("findAll()");
         model.addAttribute("playlistsDto", playlistService.findAll());
-        return "/playlists/playlists";
+        return "playlists/playlists";
     }
 
     @GetMapping("/new")
-    public final String goToCreateDepartmentPage(Model model) {
+    public String goToCreatePage(Model model) {
+        LOGGER.debug("goToCreateDepartmentPage()");
         model.addAttribute("isNew",true);
         model.addAttribute("method","POST");
         model.addAttribute(new Playlist());
-        return "/playlists/playlist";
+        return "playlists/playlist";
     }
 
     @PostMapping
-    public final String create(@ModelAttribute Playlist department){
-        playlistService.create(department);
+    public String create(Playlist playlist){
+        LOGGER.debug("create({})", playlist);
+        playlistService.create(playlist);
         return "redirect:/playlists";
     }
+
+    @GetMapping("/{playlistId}/edit")
+    public String goToEditPage(@PathVariable Integer playlistId,
+                               Model model){
+        LOGGER.debug("goToEditPage(playlistId = {})", playlistId);
+        Optional<Playlist> result = playlistService.findById(playlistId);
+        if (result.isPresent()) {
+            model.addAttribute("isNew", false);
+            model.addAttribute("playlist",result.get());
+            return "playlists/playlist";
+        }else {
+            LOGGER.warn("Playlist {} not found", playlistId);
+            model.addAttribute("errorMessage", "Playlist " + playlistId + " not found");
+            model.addAttribute("backTo", "/departments");
+            return "errorPage";
+        }
+    }
+
 
 
 }

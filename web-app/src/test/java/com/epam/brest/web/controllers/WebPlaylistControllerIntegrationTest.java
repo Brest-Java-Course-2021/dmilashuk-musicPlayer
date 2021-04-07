@@ -5,7 +5,6 @@ import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.model.Song;
 import com.epam.brest.web.config.WebConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,7 +21,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
@@ -34,9 +33,11 @@ import java.util.List;
 import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
@@ -67,7 +68,7 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
     private MockRestServiceServer mockServer;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         this.playlistsUrl = String.format("%s://%s:%d/playlists", protocol, host, port);
     }
 
@@ -76,7 +77,7 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .alwaysDo(MockMvcResultHandlers.print())
                 .build();
-        this.mockServer = MockRestServiceServer.createServer(restTemplate);;
+        this.mockServer = MockRestServiceServer.createServer(restTemplate);
     }
 
     @Test
@@ -98,37 +99,64 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
                         .body(objectMapper.writeValueAsString(songList))
                 );
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/playlists"))
+        mockMvc.perform(get("/playlists"))
 /*                .andExpect(content().contentType("text/html;charset=UTF-8"))*/
                 .andExpect(status().isOk())
-                .andExpect(view().name("/playlists/playlists"))
+                .andExpect(view().name("playlists/playlists"))
                 .andExpect(model().attribute("playlistsDto", songList));
 
         mockServer.verify();
     }
 
     @Test
-    void goToCreateDepartmentPage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/playlists/new"))
+    void goToCreatePageTest() throws Exception {
+        mockMvc.perform(get("/playlists/new"))
 /*                .andExpect(content().contentType("text/html;charset=UTF-8"))*/
                 .andExpect(status().isOk())
-                .andExpect(view().name("/playlists/playlist"))
+                .andExpect(view().name("playlists/playlist"))
                 .andExpect(model().attribute("isNew", true))
                 .andExpect(model().attribute("method", "POST"))
                 .andExpect(model().attribute("playlist", new Playlist()));
     }
 
     @Test
-    void create() {
+    void createTest() throws Exception {
+
+        mockServer.expect(once(), requestTo(new URI(playlistsUrl)))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.CREATED)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body("1")
+                );
+
+        mockMvc.perform(post("/playlists")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("playlistName", "My new playlist"))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/playlists"))
+                .andExpect(redirectedUrl("/playlists"));
+
+        mockServer.verify();
     }
 
-    private Playlist createPlaylist (Integer playlistId, String playlistName,@Nullable List<Song> songList){
+/*    @Test
+    void goToEditTest() throws Exception {
+        mockMvc.perform(get("/playlists/{}/edit}",1))
+*//*                .andExpect(content().contentType("text/html;charset=UTF-8"))*//*
+                .andExpect(status().isOk())
+                .andExpect(view().name("playlists/playlist"))
+                .andExpect(model().attribute("isNew", true))
+                .andExpect(model().attribute("method", "POST"))
+                .andExpect(model().attribute("playlist", new Playlist()));
+    }*/
+
+
+
+    private Playlist createPlaylist (@Nullable Integer playlistId, String playlistName,@Nullable List<Song> songList){
         Playlist playlist = new Playlist();
-        playlist.setPlaylistId(playlistId);
         playlist.setPlaylistName(playlistName);
-        if(songList != null){
-            playlist.setSongs(songList);
-        }
+        playlist.setPlaylistId(playlistId);
+        playlist.setSongs(songList);
         return playlist;
     }
 

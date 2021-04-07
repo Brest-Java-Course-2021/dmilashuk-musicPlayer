@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="../../../resources/static/css/bootstrap.css"
-          th:href="@{/css/bootstrap.css}">
+          th:href="@{/resources/static/css/bootstrap.css}">
     <link rel="stylesheet" href="../../../resources/static/css/style.css"
-          th:href="@{/css/style.css}">
+          th:href="@{/resources/static/css/style.css}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <title>Playlists</title>
@@ -20,7 +20,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <span class="navbar-brand"><img src="../../../resources/static/img/iconfinder-icon.svg"
-                                            th:src="@{/img/iconfinder-icon.svg}"
+                                            th:src="@{/resources/static/img/iconfinder-icon.svg}"
                                             height="32" width="32" alt="HR"></span>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
@@ -83,9 +83,10 @@
                     New playlist
                 </a>
             </td>
-            <td>56</td>
+            <td th:text="${playlistDto.getCountOfSongs()}" >56</td>
             <td class="text-end">
                 <a href="playlist.html"
+                   th:href="@{|/playlists/${playlistDto.getPlaylist().getPlaylistId()}/edit|}"
                    class="btn-sm btn-outline-light"
                    title="Edit playlist">
                     <i class="bi-pen" style="font-size: 1rem;"></i><span class="d-none d-md-inline">&nbsp;Edit</span></a>
@@ -97,7 +98,7 @@
                 </span>
             </td>
         </tr>
-        <tr>
+        <tr th:remove="all">
             <td class="text-start">
                 <a href="changePlaylist.html"
                    class="btn-sm btn-outline-light text-decoration-none fs-6"
@@ -119,7 +120,7 @@
                 </span>
             </td>
         </tr>
-        <tr>
+        <tr th:remove="all">
             <td class="text-start">
                 <a href="changePlaylist.html"
                    class="btn-sm btn-outline-light text-decoration-none fs-6"
@@ -169,9 +170,9 @@
     </div>
 </div>
 <script src="../../../resources/static/js/bootstrap.bundle.min.js"
-        th:src="@{/js/bootstrap.bundle.min.js}"></script>
+        th:src="@{/resources/static/js/bootstrap.bundle.min.js}"></script>
 <script src="../../../resources/static/js/jquery-3.4.1.slim.min.js"
-        th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
+        th:src="@{/resources/static/js/jquery-3.4.1.slim.min.js}"></script>
 <script>
     $('#deleteDialog').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget)
