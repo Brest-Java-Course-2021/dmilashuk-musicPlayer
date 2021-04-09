@@ -49,19 +49,65 @@ public class WebPlaylistController {
     public String goToEditPage(@PathVariable Integer playlistId,
                                Model model){
         LOGGER.debug("goToEditPage(playlistId = {})", playlistId);
-        Optional<Playlist> result = playlistService.findById(playlistId);
-        if (result.isPresent()) {
+        Optional<Playlist> playlistOptional = playlistService.findById(playlistId);
+            model.addAttribute("method", "PUT");
             model.addAttribute("isNew", false);
-            model.addAttribute("playlist",result.get());
+            model.addAttribute("playlist", playlistOptional.orElseThrow());
             return "playlists/playlist";
-        }else {
-            LOGGER.warn("Playlist {} not found", playlistId);
-            model.addAttribute("errorMessage", "Playlist " + playlistId + " not found");
-            model.addAttribute("backTo", "/departments");
-            return "errorPage";
-        }
     }
 
+    @PutMapping
+    public String edit(Playlist playlist){
+        LOGGER.debug(" edit({})", playlist);
+        playlistService.update(playlist);
+        return "redirect:/playlists";
+    }
 
+    @GetMapping("/{playlistId}/delete")
+    public String goToDeletePage(@PathVariable Integer playlistId,
+                                 Model model){
+        LOGGER.debug("goToDeletePage({})", playlistId);
+        Optional<Playlist> playlistOptional = playlistService.findById(playlistId);
+        model.addAttribute("playlist", playlistOptional.orElseThrow());
+        return "playlists/playlistDelete";
+    }
+
+    @DeleteMapping("/{playlistId}")
+    public String delete (@PathVariable Integer playlistId){
+        LOGGER.debug("delete({})",playlistId);
+        playlistService.delete(playlistId);
+        return "redirect:/playlists";
+    }
+
+    @GetMapping("/{playlistId}")
+    public String goToPlaylistPage(@PathVariable Integer playlistId,
+                                   Model model){
+        LOGGER.debug("goToPlaylistPage({})", playlistId);
+        Optional<Playlist> playlistOptional = playlistService.findWithSongsById(playlistId);
+        model.addAttribute("playlist", playlistOptional.orElseThrow());
+        return "playlists/changePlaylist";
+    }
+
+    @PostMapping("/{playlistId}/{songId}")
+    public String addSongIntoPlaylist(@PathVariable Integer playlistId, @PathVariable Integer songId){
+        LOGGER.debug("addSongIntoPlaylist({},{})", playlistId, songId);
+        playlistService.addSongIntoPlaylistById(playlistId, songId);
+        String redirectUrl = "/playlists/" + playlistId;
+        return "redirect:" + redirectUrl;
+    }
+
+    @DeleteMapping("/{playlistId}/{songId}")
+    public String removeSongFromPlaylist(@PathVariable Integer playlistId, @PathVariable Integer songId){
+        LOGGER.debug("removeSongFromPlaylist({},{})", playlistId, songId);
+        playlistService.removeSongFromPlaylistById(playlistId, songId);
+        String redirectUrl = "/playlists/" + playlistId;
+        return "redirect:" + redirectUrl;
+    }
+
+    @GetMapping("/{playlistId}/addSong")
+    public String goToAddSongPage (@PathVariable Integer playlistId){
+        LOGGER.debug("goToAddSongPage({})", playlistId);
+        return "playlists/changePlaylist";
+    }
 
 }

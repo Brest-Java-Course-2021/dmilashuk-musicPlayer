@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <title>Playlists</title>
 </head>
+
 <header>
     <nav class="navbar navbar-dark bg-dark navbar-expand-sm text-light p-1">
         <div class="container-fluid">
@@ -23,9 +25,9 @@
     <nav id="main-header"
          class="ps-1 py-1 mb-3 navbar navbar-light bg-light text-dark">
         <ul class="navbar-nav float-start">
-            <li class="nav-item" title="Back to">
+            <li class="nav-item" title="Back to playlists">
                 <a href="playlists/playlists.html"
-                   th:href="@{{backTo}(backTo = ${backTo})}"
+                   th:href="@{/playlists}"
                    class="btn btn-light btn-block">
                     <i class="bi-arrow-left"></i></a>
             </li>
@@ -34,7 +36,8 @@
 </header>
 <body>
 <section class="container-fluid">
-    <h1 th:text="${errorMessage}"></h1>
+    <h2>Opps!! Something wrong !?</h2>
+    <div th:utext="'Exception: ' + ${exception.getMessage()}" >Something wrong</div>
 </section>
 <footer>
     <hr/>

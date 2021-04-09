@@ -77,6 +77,7 @@
         <tr th:each="playlistDto : ${playlistsDto}">
             <td class="text-start">
                 <a href="changePlaylist.html"
+                   th:href="@{|/playlists/${playlistDto.getPlaylist().playlistId}|}"
                    class="btn-sm btn-outline-light text-decoration-none fs-6"
                    title="Open playlist"
                    th:text="${playlistDto.getPlaylist().getPlaylistName()}">
@@ -90,12 +91,11 @@
                    class="btn-sm btn-outline-light"
                    title="Edit playlist">
                     <i class="bi-pen" style="font-size: 1rem;"></i><span class="d-none d-md-inline">&nbsp;Edit</span></a>
-                <span data-bs-toggle="modal" data-bs-target="#deleteDialog">
                     <a href="#" class="btn-sm btn-outline-light"
+                       th:href="@{|/playlists/${playlistDto.getPlaylist().getPlaylistId()}/delete|}"
                        title="Delete playlist"><i class="bi-x" style="font-size: 1.25rem;"></i><span
                             class="d-none d-md-inline">&nbsp;Delete</span>
                     </a>
-                </span>
             </td>
         </tr>
         <tr th:remove="all">
@@ -150,35 +150,7 @@
     <p class="text px-3">&copy;2021</p>
 </footer>
 
-<!-- Confirm delete Modal -->
-<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
-     aria-labelledby="deleteDialogLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header alert-danger">
-                <h5 class="modal-title" id="deleteDialogLabel">Delete playlist</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Please confirm delete
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
 <script src="../../../resources/static/js/bootstrap.bundle.min.js"
         th:src="@{/resources/static/js/bootstrap.bundle.min.js}"></script>
-<script src="../../../resources/static/js/jquery-3.4.1.slim.min.js"
-        th:src="@{/resources/static/js/jquery-3.4.1.slim.min.js}"></script>
-<script>
-    $('#deleteDialog').on('show.bs.modal', function (event) {
-        var target = $(event.relatedTarget)
-        $(this).find('.modal-body').text('Please confirm delete department: "' + target.data('name') + '"')
-        document.getElementById('deleteUrl').href = '/department/' + target.data('id') + '/delete';
-    })
-</script>
 </body>
 </html>

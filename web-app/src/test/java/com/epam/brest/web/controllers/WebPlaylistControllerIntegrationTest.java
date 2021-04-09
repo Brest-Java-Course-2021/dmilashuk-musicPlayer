@@ -35,8 +35,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -99,19 +98,18 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
                         .body(objectMapper.writeValueAsString(songList))
                 );
 
-        mockMvc.perform(get("/playlists"))
-/*                .andExpect(content().contentType("text/html;charset=UTF-8"))*/
+        mockMvc.perform(get("/playlists")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
                 .andExpect(view().name("playlists/playlists"))
                 .andExpect(model().attribute("playlistsDto", songList));
-
         mockServer.verify();
     }
 
     @Test
     void goToCreatePageTest() throws Exception {
-        mockMvc.perform(get("/playlists/new"))
-/*                .andExpect(content().contentType("text/html;charset=UTF-8"))*/
+        mockMvc.perform(get("/playlists/new")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
                 .andExpect(view().name("playlists/playlist"))
                 .andExpect(model().attribute("isNew", true))
@@ -121,7 +119,6 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
 
     @Test
     void createTest() throws Exception {
-
         mockServer.expect(once(), requestTo(new URI(playlistsUrl)))
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withStatus(HttpStatus.CREATED)
@@ -135,20 +132,133 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
                 .andExpect(status().isFound())
                 .andExpect(view().name("redirect:/playlists"))
                 .andExpect(redirectedUrl("/playlists"));
-
         mockServer.verify();
     }
 
-/*    @Test
+    @Test
     void goToEditTest() throws Exception {
-        mockMvc.perform(get("/playlists/{}/edit}",1))
-*//*                .andExpect(content().contentType("text/html;charset=UTF-8"))*//*
+        Playlist playlist = createPlaylist(1,"Bad playlist", null);
+
+        mockServer.expect(once(), requestTo(new URI(playlistsUrl + "/" + playlist.getPlaylistId())))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(objectMapper.writeValueAsString(playlist))
+                );
+
+        mockMvc.perform(get("/playlists/{playlistId}/edit", playlist.getPlaylistId())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
                 .andExpect(view().name("playlists/playlist"))
-                .andExpect(model().attribute("isNew", true))
-                .andExpect(model().attribute("method", "POST"))
-                .andExpect(model().attribute("playlist", new Playlist()));
-    }*/
+                .andExpect(model().attribute("isNew", false))
+                .andExpect(model().attribute("method", "PUT"))
+                .andExpect(model().attribute("playlist", playlist));
+        mockServer.verify();
+    }
+
+    @Test
+    void updateTest() throws Exception {
+        mockServer.expect(once(), requestTo(new URI(playlistsUrl)))
+                .andExpect(method(HttpMethod.PUT))
+                .andRespond(withStatus(HttpStatus.OK));
+
+        mockMvc.perform(put("/playlists")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("playlistName", "My new playlist"))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/playlists"))
+                .andExpect(redirectedUrl("/playlists"));
+        mockServer.verify();
+    }
+
+    @Test
+    void goToDeleteTest() throws Exception {
+        Playlist playlist = createPlaylist(1,"Bad playlist", null);
+
+        mockServer.expect(once(), requestTo(new URI(playlistsUrl + "/" + playlist.getPlaylistId())))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(objectMapper.writeValueAsString(playlist))
+                );
+
+        mockMvc.perform(get("/playlists/{playlistId}/delete", playlist.getPlaylistId())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(view().name("playlists/playlistDelete"))
+                .andExpect(model().attribute("playlist", playlist));
+        mockServer.verify();
+    }
+
+    @Test
+    void deleteTest() throws Exception {
+        Integer playlistId = 1;
+        mockServer.expect(once(), requestTo(new URI(playlistsUrl + "/" + playlistId)))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withStatus(HttpStatus.OK));
+
+        mockMvc.perform(delete("/playlists/{playlistId}", playlistId)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/playlists"))
+                .andExpect(redirectedUrl("/playlists"));
+        mockServer.verify();
+    }
+
+    @Test
+    void goToPlaylistTest() throws Exception {
+        Song song1 = createSong(1,"Singer1", "Song1");
+        Song song2 = createSong(2,"Singer2", "Song2");
+        Playlist playlist = createPlaylist(1,"Bad playlist", Arrays.asList(song1, song2));
+
+        mockServer.expect(once(), requestTo(new URI(playlistsUrl + "/" + playlist.getPlaylistId() + "/withSongs")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(objectMapper.writeValueAsString(playlist))
+                );
+
+        mockMvc.perform(get("/playlists/{playlistId}", playlist.getPlaylistId())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(view().name("playlists/changePlaylist"))
+                .andExpect(model().attribute("playlist", playlist));
+        mockServer.verify();
+    }
+
+    @Test
+    void addSongIntoPlaylistTest() throws Exception{
+        Integer playlistId = 1;
+        Integer songId = 2;
+
+        mockServer.expect(once(), requestTo(new URI(playlistsUrl + "/" + playlistId + "/" + songId)))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK));
+
+        mockMvc.perform(post("/playlists/{playlistId}/{songId}", playlistId, songId)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/playlists/" + playlistId))
+                .andExpect(redirectedUrl("/playlists/" + playlistId));
+        mockServer.verify();
+    }
+
+    @Test
+    void removeSongFromPlaylistTest() throws Exception{
+        Integer playlistId = 1;
+        Integer songId = 2;
+
+        mockServer.expect(once(), requestTo(new URI(playlistsUrl + "/" + playlistId + "/" + songId)))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withStatus(HttpStatus.OK));
+
+        mockMvc.perform(delete("/playlists/{playlistId}/{songId}", playlistId, songId)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/playlists/" + playlistId))
+                .andExpect(redirectedUrl("/playlists/" + playlistId));
+        mockServer.verify();
+    }
 
 
 
@@ -165,5 +275,13 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
         playlistDto.setPlaylist(playlist);
         playlistDto.setCountOfSongs(countOfSongs);
         return playlistDto;
+    }
+
+    private Song createSong (Integer songId, String singer, String tittle){
+        Song song = new Song();
+        song.setSongId(songId);
+        song.setSinger(singer);
+        song.setTittle(tittle);
+        return song;
     }
 }

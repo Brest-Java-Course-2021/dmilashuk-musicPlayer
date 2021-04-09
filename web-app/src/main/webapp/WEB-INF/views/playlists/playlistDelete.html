@@ -10,7 +10,7 @@
           th:href="@{/resources/static/css/style.css}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <title>New playlist</title>
+    <title>Delete playlist</title>
 </head>
 <body>
 <header>
@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active fs-5"
+                        <a class="nav-link fs-5"
                            href="playlists.html"
                            th:href="@{/playlists}" >Playlists</a>
                     </li>
@@ -48,42 +48,29 @@
                     <i class="bi-arrow-left"></i></a>
             </li>
         </ul>
-        <span class="navbar-brand text-uppercase me-auto" th:text="${isNew} ? 'New playlist' : 'Edit playlist'">Edit playlist</span>
+        <span class="navbar-brand text-uppercase me-auto" >Delete playlist</span>
     </nav>
 </header>
 <section class="container-fluid">
     <div class="card text-white bg-dark mb-3">
-        <div class="card-body">
-            <form id="playlistForm"
-                  th:method="${method}"
-                  th:action="@{/playlists}"
-                  th:object="${playlist}">
-
-                <input id="field_playlistId"
-                       type="hidden"
-                       th:field="*{playlistId}"/>
-
+        <form id="playlistForm"
+              th:method="DELETE"
+              th:action="@{|/playlists/${playlist.getPlaylistId()}|}">
                 <div class="mb-3">
-                    <label class="form-label"
-                           for="field_playlistName">Playlist name</label>
-                    <input class="form-control "
-                           id="field_playlistName"
-                           type="text" placeholder="CEO"
-                           th:field="*{playlistName}"/>
+                    <p th:text="'Please confirm delete playlist:' + ${playlist.getPlaylistName()}">Please confirm delete playlist:</p>
                 </div>
 
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-start">
                     <a href="playlists.html"
                        th:href="@{/playlists}"
                        class="btn btn-light me-1"
                        title="Cancel">Cancel</a>
                     <input type="submit"
                            class="btn btn-primary"
-                           title="Save playlist"
-                           value="Save"/>
+                           title="Delete playlist"
+                           value="Delete"/>
                 </div>
-            </form>
-        </div>
+        </form>
     </div>
 </section>
 <footer>

@@ -83,7 +83,7 @@ public class WebPlaylistServiceImpl implements PlaylistService, InitializingBean
     public Integer delete(Integer playlistId) {
         LOGGER.debug("delete({})", playlistId);
 
-        ResponseEntity<Void> responseEntity = restTemplate.exchange(rootUrl + "/" + playlistId, HttpMethod.DELETE, null, Void.class, playlistId);
+        ResponseEntity<Void> responseEntity = restTemplate.exchange(rootUrl + "/" + playlistId, HttpMethod.DELETE, null, Void.class);
         return responseEntity.getStatusCode().is2xxSuccessful() ? 1 : 0;
     }
 
@@ -97,12 +97,15 @@ public class WebPlaylistServiceImpl implements PlaylistService, InitializingBean
 
     @Override
     public Integer addSongIntoPlaylistById(Integer playlistId, Integer songId) {
-
-        return null;
+        LOGGER.debug("addSongIntoPlaylistById({},{})", playlistId, songId);
+        ResponseEntity<Void> responseEntity = restTemplate.exchange(rootUrl + "/" + playlistId + "/" + songId, HttpMethod.POST, null, Void.class);
+        return responseEntity.getStatusCode().is2xxSuccessful() ? 1 : 0;
     }
 
     @Override
     public Integer removeSongFromPlaylistById(Integer playlistId, Integer songId) {
-        return null;
+        LOGGER.debug("removeSongFromPlaylistById({},{})", playlistId, songId);
+        ResponseEntity<Void> responseEntity = restTemplate.exchange(rootUrl + "/" + playlistId + "/" + songId, HttpMethod.DELETE, null, Void.class);
+        return responseEntity.getStatusCode().is2xxSuccessful() ? 1 : 0;
     }
 }
