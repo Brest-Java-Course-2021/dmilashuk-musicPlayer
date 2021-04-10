@@ -1,7 +1,7 @@
 package com.epam.brest.web.controllers;
 
 import com.epam.brest.model.Playlist;
-import com.epam.brest.web.serviceImpl.WebPlaylistServiceImpl;
+import com.epam.brest.service.PlaylistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,9 +16,9 @@ public class WebPlaylistController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebPlaylistController.class);
 
-    private final WebPlaylistServiceImpl playlistService;
+    private final PlaylistService playlistService;
 
-    public WebPlaylistController(WebPlaylistServiceImpl playlistService) {
+    public WebPlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
     }
 
@@ -89,7 +89,8 @@ public class WebPlaylistController {
     }
 
     @PostMapping("/{playlistId}/{songId}")
-    public String addSongIntoPlaylist(@PathVariable Integer playlistId, @PathVariable Integer songId){
+    public String addSongIntoPlaylist(@PathVariable("playlistId") Integer playlistId,
+                                      @PathVariable("songId") Integer songId){
         LOGGER.debug("addSongIntoPlaylist({},{})", playlistId, songId);
         playlistService.addSongIntoPlaylistById(playlistId, songId);
         String redirectUrl = "/playlists/" + playlistId;

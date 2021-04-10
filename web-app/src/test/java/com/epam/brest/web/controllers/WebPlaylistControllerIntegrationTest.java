@@ -89,20 +89,20 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
         PlaylistDto playlistDto2 = createPlaylistDto(playlist2, 10);
         PlaylistDto playlistDto3 = createPlaylistDto(playlist3, 0);
 
-        List<PlaylistDto> songList = Arrays.asList(playlistDto1, playlistDto2, playlistDto3);
+        List<PlaylistDto> dtoList = Arrays.asList(playlistDto1, playlistDto2, playlistDto3);
 
         mockServer.expect(once(), requestTo(new URI(playlistsUrl)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(objectMapper.writeValueAsString(songList))
+                        .body(objectMapper.writeValueAsString(dtoList))
                 );
 
         mockMvc.perform(get("/playlists")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
                 .andExpect(view().name("playlists/playlists"))
-                .andExpect(model().attribute("playlistsDto", songList));
+                .andExpect(model().attribute("playlistsDto", dtoList));
         mockServer.verify();
     }
 

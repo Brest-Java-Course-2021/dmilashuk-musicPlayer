@@ -26,12 +26,12 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link fs-5"
-                           href="playlists.html"
+                           href="../playlists/playlists.html"
                            th:href="@{/playlists}" >Playlists</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-5"
-                           href="../songs/songs.html"
+                           href="songs.html"
                            th:href="@{/songs}">Songs</a>
                     </li>
                 </ul>
@@ -42,27 +42,13 @@
          class="ps-1 py-1 mb-3 navbar navbar-light bg-light text-dark">
         <ul class="navbar-nav float-start">
             <li class="nav-item" title="Back to list">
-                <a href="playlists.html"
-                   th:href="@{/playlists}"
+                <a href="../playlists/changePlaylist.html"
+                   th:href="@{|/playlists/${playlistId}|}"
                    class="btn btn-light btn-block">
                     <i class="bi-arrow-left"></i></a>
             </li>
         </ul>
-        <span th:text="'Change playlist: ' + ${playlist.playlistName}" class="navbar-brand text-uppercase me-auto">Change playlist</span>
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a href="../songs/addSongIntoPlaylist.html"
-                   th:href="@{|/songs//withoutPlaylist/${playlist.getPlaylistId()}|}"
-                   class="btn btn-outline-dark"
-                   data-bs-toggle="tooltip"
-                   data-bs-placement="top"
-                   title="Add song to playlist">
-                    <i class="bi-plus"></i>&nbsp;
-                    <span class="d-none d-sm-inline">Add song to playlist</span>
-                    <span class="d-sm-none">Add</span>
-                </a>
-            </li>
-        </ul>
+        <span class="navbar-brand text-uppercase me-auto">Add songs</span>
     </nav>
 </header>
 <section class="container-fluid">
@@ -77,23 +63,23 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="song : ${playlist.getSongs()}">
+        <tr th:each="song : ${songs}">
             <td th:text="${song.getSinger()}"
                 class="text-start">
-                Metallica
+                Michael Jackson
             </td>
-            <td th:text="${song.getTittle()}">Nothing else matters</td>
-            <td th:text="${song.getAlbum()}" class="d-none d-md-table-cell">Metallica</td>
+            <td th:text="${song.tittle}" >Billie jean</td>
+            <td th:text="${song.getAlbum()}" class="d-none d-md-table-cell">Thriller</td>
             <td th:text="${#dates.format(song.getRealiseDate(), 'dd-MM-yyyy')}"
-                type="date" class="d-none d-md-table-cell">02-03-1992</td>
+                type="date" class="d-none d-md-table-cell">02-01-1983</td>
             <td class="text-end">
-                <form id="deleteSongForm"
-                      th:method="DELETE"
-                      th:action="@{|/playlists/${playlist.getPlaylistId()}/${song.getSongId()}|}">
-                    <button class="btn-sm btn-dark btn-outline-light" type="submit" title="Remove song" value="Remove">
-                        <i class="bi-x" style="font-size: 1.25rem;"></i>
-                        <span class="d-none d-md-inline">&nbsp;Remove</span>
-                    </button>
+                <form id="addSongForm"
+                      th:method="POST"
+                      th:action="@{|/playlists/${playlistId}/${song.getSongId()}|}">
+                <button class="btn-sm btn-dark btn-outline-light" type="submit" title="Add song"  value="Add">
+                    <i class="bi bi-plus-square" style="font-size: 1rem;"></i>
+                    <span class="d-none d-md-inline">&nbsp;Add</span>
+                </button>
                 </form>
             </td>
         </tr>
@@ -104,6 +90,7 @@
     <hr/>
     <p class="text px-3">&copy;2021</p>
 </footer>
+
 <script src="../../../resources/static/js/bootstrap.bundle.min.js"
         th:src="@{/resources/static/js/bootstrap.bundle.min.js}"></script>
 </body>

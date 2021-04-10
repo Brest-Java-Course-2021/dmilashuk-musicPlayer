@@ -2,6 +2,7 @@ package com.epam.brest.rest.daoImpl;
 
 
 import com.epam.brest.dao.PlaylistDao;
+import com.epam.brest.dao.SongDao;
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.model.Song;
@@ -36,6 +37,8 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
 
     private final NamedParameterJdbcTemplate template;
 
+    private final SongDao songDao;
+
     @Override
     public void afterPropertiesSet() {
         if (template == null){
@@ -44,8 +47,9 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
     }
 
     @Autowired
-    public PlaylistDaoJdbc(NamedParameterJdbcTemplate template) {
+    public PlaylistDaoJdbc(NamedParameterJdbcTemplate template, SongDao songDao) {
         this.template = template;
+        this.songDao = songDao;
     }
 
     @Value("${sql.playlist.findAll}")
@@ -172,7 +176,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
             LOGGER.warn("Playlist with this id={} does not exist",playlistId);
             throw new IllegalArgumentException("Playlist does not exist");
         }
-        if(this.findById(song_id).isEmpty()){
+        if(songDao.findById(song_id).isEmpty()){
             LOGGER.warn("Song with this id={} does not exist",song_id);
             throw new IllegalArgumentException("Song does not exist");
         }
