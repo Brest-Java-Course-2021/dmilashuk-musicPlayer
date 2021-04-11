@@ -2,6 +2,9 @@
 
 # Music player test project
 
+Technical task: [./documentation/Technical task.md](./documentation/Technical task.md).
+
+Database structure: [./documentation/Database structure.pdf](./documentation/Database structure.pdf).
 ## Requirements
 
 * JDK 11

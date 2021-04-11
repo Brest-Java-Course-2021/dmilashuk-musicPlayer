@@ -48,7 +48,7 @@
                     <i class="bi-arrow-left"></i></a>
             </li>
         </ul>
-        <span class="navbar-brand text-uppercase me-auto" >Delete playlist</span>
+        <span class="navbar-brand text-uppercase me-auto" >Delete song</span>
     </nav>
 </header>
 <section class="container-fluid">
@@ -57,7 +57,7 @@
               th:method="DELETE"
               th:action="@{|/songs/${song.getSongId()}|}">
                 <div class="mb-3">
-                    <p th:text="'Please confirm delete playlist:' + ${song.getSinger()} + '-' + ${song.getTittle()}">Please confirm delete playlist:</p>
+                    <p th:text="'Please confirm delete song:' + ${song.getSinger()} + '-' + ${song.getTittle()}">Please confirm delete playlist:</p>
                 </div>
 
                 <div class="d-flex justify-content-start">
