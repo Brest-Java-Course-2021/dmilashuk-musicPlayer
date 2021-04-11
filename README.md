@@ -20,6 +20,6 @@ This starts Jetty and serves up your rest-app project on [http://localhost:8080]
 ```
 cd ./web-app; mvn jetty:run
 ```
-This starts Jetty and serves up your web-app project on [http://localhost:8080](http://localhost:8090).
+This starts Jetty and serves up your web-app project on [http://localhost:8090](http://localhost:8090).
 ## Local tests with Postman
 You can import postman collection: [./documentation/music player.postman_collection.json](./documentation/music%20player.postman_collection.json).
