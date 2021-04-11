@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -62,9 +63,14 @@ public class WebSongServiceImpl implements SongService, InitializingBean {
     @Override
     public List<Song> findAllByFilter(Date startDate, Date endDate) {
         LOGGER.debug("findAllByFilter({},{})", startDate, endDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String stringStartDate = null;
+        String stringEndDate = null;
+        if(startDate != null) stringStartDate = dateFormat.format(startDate);
+        if(endDate!= null) stringEndDate = dateFormat.format(endDate);
         ParameterizedTypeReference<List<Song>> typeReference = new ParameterizedTypeReference<>(){};
         ResponseEntity<List<Song>> responseEntity = restTemplate.exchange(rootUrl + "?startDate={startDate}&endDate={endDate}",
-                HttpMethod.GET,null, typeReference, startDate, endDate);
+                HttpMethod.GET,null, typeReference,  stringStartDate, stringEndDate);
         return responseEntity.getBody();
     }
 

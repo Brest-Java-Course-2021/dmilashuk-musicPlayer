@@ -1,9 +1,8 @@
 package com.epam.brest.model;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,10 +19,11 @@ public class Song {
     @Size(min = 1, max = 60, message = "Tittle should be between 1 and 60 characters")
     private String tittle;
 
-    @Size(min = 1, max = 30, message = "Album should be between 1 and 60 characters")
+    @Size(max = 30, message = "Album should not be greater than 30 characters")
     private String album;
 
     @PastOrPresent(message = "Realise date should be past or present")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date realiseDate;
 
     public Integer getSongId() {

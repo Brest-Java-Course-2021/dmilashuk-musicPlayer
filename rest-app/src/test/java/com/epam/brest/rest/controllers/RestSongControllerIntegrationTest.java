@@ -104,16 +104,6 @@ class RestSongControllerIntegrationTest {
     }
 
     @Test
-    public void findAllWithRequestParamNotFoundTest() throws Exception {
-        when(songService.findAllByFilter(any(Date.class),any(Date.class))).thenReturn(Collections.emptyList());
-        mockMvc.perform(get("/songs")
-                .param("startDate", "1992-03-12")
-                .param("endDate", "2000-03-12"))
-                .andDo(print())
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     public void findAllWithOnlyStartDateTest() throws Exception {
         when(this.songService.findAllByFilter(any(Date.class), isNull())).thenReturn(list);
         String responseBody1 = mockMvc.perform(get("/songs")
@@ -246,7 +236,7 @@ class RestSongControllerIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors[0]").value("Album should be between 1 and 60 characters"))
+                .andExpect(jsonPath("$.errors[0]").value("Album should not be greater than 30 characters"))
                 .andExpect(jsonPath("$.errors[1]").value("Singer should be between 1 and 30 characters"))
                 .andExpect(jsonPath("$.errors[2]").value("Tittle should be between 1 and 60 characters"));
 

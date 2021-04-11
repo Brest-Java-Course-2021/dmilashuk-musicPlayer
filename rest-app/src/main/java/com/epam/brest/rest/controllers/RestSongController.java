@@ -39,15 +39,11 @@ public class RestSongController {
         if(startDate != null || endDate != null){
             LOGGER.debug("RestSongController: findAll({},{})", startDate, endDate);
             List<Song> result = songService.findAllByFilter(startDate, endDate);
-            return result.isEmpty()
-                    ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                    : new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
         LOGGER.debug("RestSongController: findAll()");
         List<Song> result = songService.findAll();
-        return result.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/withoutPlaylist/{playlistId}")
@@ -56,9 +52,7 @@ public class RestSongController {
                                                                          Integer playlistId){
         LOGGER.debug("RestSongController: findAllWithoutPlaylist({})", playlistId);
         List<Song> resultList = songService.findAllWithoutPlaylist(playlistId);
-        return resultList.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(resultList, HttpStatus.OK);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{songId}")

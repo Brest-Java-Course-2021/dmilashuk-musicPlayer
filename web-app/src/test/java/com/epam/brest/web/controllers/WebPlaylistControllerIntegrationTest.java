@@ -157,7 +157,7 @@ class WebPlaylistControllerIntegrationTest implements InitializingBean {
     }
 
     @Test
-    void updateTest() throws Exception {
+    void editTest() throws Exception {
         mockServer.expect(once(), requestTo(new URI(playlistsUrl)))
                 .andExpect(method(HttpMethod.PUT))
                 .andRespond(withStatus(HttpStatus.OK));

@@ -56,13 +56,16 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
     @Value("${sql.song.checkSongUnique}")
     private String sqlCheckSongUnique;
 
+    @Value("${sql.song.checkSongUniqueForEdit}")
+    private String sqlCheckSongUniqueForEdit;
+
     @Autowired
     public void setTemplate(NamedParameterJdbcTemplate template) {
         this.template = template;
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (template == null){
             LOGGER.error("NamedParameterJdbcTemplate was not injected");
             throw new BeanCreationException("NamedParameterJdbcTemplate is null on JdbcDepartmentDAO");}
@@ -126,7 +129,7 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
     @Override
     public Integer update(Song song) {
         LOGGER.debug("SongDaoJdbc: update({})",song);
-        checkingThatSongIsUnique(song);
+        checkingThatSongIsUniqueForEdit(song);
 
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("SONG_ID", song.getSongId())
@@ -148,6 +151,18 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
                 boolean checkWhatSongUnique = template.queryForObject(sqlCheckSongUnique,
                 new MapSqlParameterSource("SINGER", song.getSinger()).addValue("TITTLE", song.getTittle()),
                 Integer.class) == 0;
+        if (!checkWhatSongUnique){
+            LOGGER.warn("The same song is already exist {}", song);
+            throw new IllegalArgumentException("Song is already exist");
+        }
+    }
+    private void checkingThatSongIsUniqueForEdit(Song song){
+        SqlParameterSource parameterSource = new MapSqlParameterSource("SINGER", song.getSinger())
+                .addValue("TITTLE", song.getTittle())
+                .addValue("SONG_ID", song.getSongId());
+
+        boolean checkWhatSongUnique = template.queryForObject(sqlCheckSongUniqueForEdit,
+                parameterSource, Integer.class) == 0;
         if (!checkWhatSongUnique){
             LOGGER.warn("The same song is already exist {}", song);
             throw new IllegalArgumentException("Song is already exist");

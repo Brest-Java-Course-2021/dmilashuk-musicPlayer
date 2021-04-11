@@ -26,8 +26,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        String messageError = e.getRootCause().getMessage();
-        if (messageError == null){
+        String messageError;
+        Throwable throwable = e.getRootCause();
+        if (throwable != null){
+            messageError = throwable.getMessage();
+        }else {
             messageError = e.getMessage();
         }
         ErrorResponse errorResponse = new ErrorResponse(messageError,"Required date pattern: yyyy-MM-dd like 2000-01-01");

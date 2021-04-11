@@ -52,7 +52,7 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a href="../songs/addSongIntoPlaylist.html"
-                   th:href="@{|/songs//withoutPlaylist/${playlist.getPlaylistId()}|}"
+                   th:href="@{|/songs/withoutPlaylist/${playlist.getPlaylistId()}|}"
                    class="btn btn-outline-dark"
                    data-bs-toggle="tooltip"
                    data-bs-placement="top"
@@ -87,8 +87,7 @@
             <td th:text="${#dates.format(song.getRealiseDate(), 'dd-MM-yyyy')}"
                 type="date" class="d-none d-md-table-cell">02-03-1992</td>
             <td class="text-end">
-                <form id="deleteSongForm"
-                      th:method="DELETE"
+                <form th:method="DELETE"
                       th:action="@{|/playlists/${playlist.getPlaylistId()}/${song.getSongId()}|}">
                     <button class="btn-sm btn-dark btn-outline-light" type="submit" title="Remove song" value="Remove">
                         <i class="bi-x" style="font-size: 1.25rem;"></i>

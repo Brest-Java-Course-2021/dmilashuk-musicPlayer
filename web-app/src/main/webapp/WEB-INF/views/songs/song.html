@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../../../resources/static/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../../../resources/static/css/bootstrap.css"
+          th:href="@{/resources/static/css/bootstrap.css}">
+    <link rel="stylesheet" href="../../../resources/static/css/style.css"
+          th:href="@{/resources/static/css/style.css}">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../../resources/static/css/style.css">
-    <title>New song</title>
+    <title>Songs</title>
 </head>
 <body>
 <header>
@@ -15,14 +19,20 @@
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <span class="navbar-brand"><img src="../../../resources/static/img/iconfinder-icon.svg" height="32" width="32" alt="HR"></span>
+            <span class="navbar-brand"><img src="../../../resources/static/img/iconfinder-icon.svg"
+                                            th:src="@{/resources/static/img/iconfinder-icon.svg}"
+                                            height="32" width="32" alt="HR"></span>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link fs-5" href="../playlists/playlists.html">Playlists</a>
+                        <a class="nav-link fs-5"
+                           href="../playlists/playlists.html"
+                           th:href="@{/playlists}" >Playlists</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active fs-5" href="songs.html">Songs</a>
+                        <a class="nav-link active fs-5"
+                           href="songs.html"
+                           th:href="@{/songs}">Songs</a>
                     </li>
                 </ul>
             </div>
@@ -32,21 +42,32 @@
          class="ps-1 py-1 mb-3 navbar navbar-light bg-light text-dark">
         <ul class="navbar-nav float-start">
             <li class="nav-item" title="Back to list">
-                <a href="songs.html" class="btn btn-light btn-block">
+                <a href="songs.html"
+                   th:href="@{/songs}"
+                   class="btn btn-light btn-block">
                     <i class="bi-arrow-left"></i></a>
             </li>
         </ul>
-        <span class="navbar-brand text-uppercase me-auto">Edit song</span>
+        <span class="navbar-brand text-uppercase me-auto" th:text="${isNew} ? 'New song' : 'Edit song'">Edit song</span>
     </nav>
 </header>
 <section class="container-fluid">
     <div class="card text-white bg-dark mb-3">
         <div class="card-body">
-            <form>
+            <form id="songForm"
+                  th:method="${method}"
+                  th:object="${song}"
+                  th:action="@{/songs}">
                 <div class="mb-3">
+
+                    <input id="field_playlistId"
+                           type="hidden"
+                           th:field="*{songId}"/>
+
                     <label class="form-label"
                            for="field_songSinger">Singer</label>
                     <input class="form-control "
+                           th:field="*{singer}"
                            id="field_songSinger"
                            type="text" placeholder="Metallica"/>
                 </div>
@@ -54,6 +75,7 @@
                     <label class="form-label"
                            for="field_songTittle">Tittle</label>
                     <input class="form-control "
+                           th:field="*{tittle}"
                            id="field_songTittle"
                            type="text" placeholder="Nothing else matters"/>
                 </div>
@@ -61,6 +83,7 @@
                     <label class="form-label"
                            for="field_songAlbum">Album</label>
                     <input class="form-control "
+                           th:field="*{album}"
                            id="field_songAlbum"
                            type="text" placeholder="Metallica"/>
                 </div>
@@ -68,16 +91,19 @@
                     <label class="form-label"
                            for="field_songReleaseDate">Release date</label>
                     <input class="form-control "
+                           th:field="*{realiseDate}"
                            id="field_songReleaseDate"
                            type="date"/>
                 </div>
                 <div class="d-flex justify-content-end">
                     <a href="songs.html"
+                       th:href="@{/songs}"
                        class="btn btn-light me-1"
                        title="Cancel">Cancel</a>
-                    <a href="songs.html"
-                       class="btn btn-success"
-                       title="Save department">Save</a>
+                    <input type="submit"
+                           class="btn btn-primary"
+                           title="Save song"
+                           value="Save"/>
                 </div>
             </form>
         </div>
@@ -87,6 +113,7 @@
     <hr/>
     <p class="text px-3">&copy;2021</p>
 </footer>
-<script src="../../../resources/static/js/bootstrap.bundle.min.js"></script>
+<script src="../../../resources/static/js/bootstrap.bundle.min.js"
+        th:src="@{/resources/static/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

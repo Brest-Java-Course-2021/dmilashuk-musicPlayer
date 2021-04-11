@@ -107,6 +107,7 @@ public class SongDaoJdbcIntegrationTest {
         assertEquals(1, songDaoJdbc.update(song1));
         assertEquals("Алла Пугачева",songDaoJdbc.findById(2).orElseThrow().getSinger());
         Song song2 = new Song();
+        song2.setSongId(2);
         song2.setSinger("Metallica");
         song2.setTittle("Nothing else matters");
         assertThrows(IllegalArgumentException.class, () -> songDaoJdbc.update(song2));

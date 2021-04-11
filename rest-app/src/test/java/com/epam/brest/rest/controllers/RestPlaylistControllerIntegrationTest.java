@@ -21,7 +21,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,8 +38,6 @@ class RestPlaylistControllerIntegrationTest {
 
     //TODO configure mockMvc with StandaloneMockMvcBuilder
 
-    private final List<Playlist> list;
-
     private final Playlist playlist;
 
     @Autowired
@@ -52,12 +49,9 @@ class RestPlaylistControllerIntegrationTest {
     private MockMvc mockMvc;
 
     {
-        Playlist playlist1 = new Playlist();
-        playlist1.setPlaylistName("New playlist");
-        Playlist playlist2 = new Playlist();
-        playlist2.setPlaylistName("Old playlist");
-        this.list = Arrays.asList(playlist1, playlist2);
-        this.playlist = playlist1;
+        Playlist playlist = new Playlist();
+        playlist.setPlaylistName("New playlist");
+        this.playlist = playlist;
     }
 
     @BeforeEach
