@@ -30,7 +30,7 @@ You can import postman collection: [./documentation/music player.postman_collect
 ## Deploying project with Tomcat 9 on different ports
 
 * Open Tomcat folder
-* Open /conf/server.xml and next configuration before \</Service> tag
+* Open /conf/server.xml and next configuration before \</Server> tag
 
 ```
 <Service name="server8180">
