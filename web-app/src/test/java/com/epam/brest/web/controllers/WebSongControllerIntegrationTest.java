@@ -1,7 +1,5 @@
 package com.epam.brest.web.controllers;
 
-import com.epam.brest.model.Playlist;
-import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.model.Song;
 import com.epam.brest.web.config.WebConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +25,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;

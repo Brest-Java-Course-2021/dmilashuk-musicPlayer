@@ -1,4 +1,4 @@
-package com.epam.brest.web.serviceImpl;
+package com.epam.brest.service.restImpl;
 
 import com.epam.brest.model.Song;
 import com.epam.brest.service.SongService;
@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@PropertySource("classpath:restServer.properties")
 public class WebSongServiceImpl implements SongService, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSongServiceImpl.class);

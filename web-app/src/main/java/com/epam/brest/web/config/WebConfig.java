@@ -23,8 +23,8 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc()
-@PropertySource("classpath:application.properties")
-@ComponentScan({"com.epam.brest.web.controllers", "com.epam.brest.web.serviceImpl"})
+@PropertySource("classpath:restServer.properties")
+@ComponentScan({"com.epam.brest.web.controllers", "com.epam.brest.service.restImpl"})
 public class WebConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;

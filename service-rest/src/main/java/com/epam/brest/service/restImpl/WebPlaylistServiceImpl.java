@@ -1,4 +1,4 @@
-package com.epam.brest.web.serviceImpl;
+package com.epam.brest.service.restImpl;
 
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:restServer.properties")
 public class WebPlaylistServiceImpl implements PlaylistService, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebPlaylistServiceImpl.class);

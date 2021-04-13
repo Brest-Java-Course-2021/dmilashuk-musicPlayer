@@ -22,6 +22,7 @@
         <module>web-app</module>
         <module>dao-Jdbc</module>
         <module>service-dao</module>
+        <module>service-rest</module>
     </modules>
 
     <properties>
@@ -38,8 +39,14 @@
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <mockito.version>3.8.0</mockito.version>
     </properties>
+
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>service-rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>service-dao</artifactId>
