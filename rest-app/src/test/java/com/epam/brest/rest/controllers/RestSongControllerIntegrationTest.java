@@ -1,6 +1,5 @@
 package com.epam.brest.rest.controllers;
 
-import com.epam.brest.dao.jdbc.config.DbConfig;
 import com.epam.brest.model.Song;
 import com.epam.brest.rest.config.RestRootConfig;
 import com.epam.brest.rest.config.RestWebConfig;
@@ -21,7 +20,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -32,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @WebAppConfiguration
-@ContextConfiguration(classes = {RestWebConfig.class, RestRootConfig.class, DbConfig.class})
+@ContextConfiguration(classes = {RestWebConfig.class, RestRootConfig.class})
 class RestSongControllerIntegrationTest {
 
     private final List<Song> list;

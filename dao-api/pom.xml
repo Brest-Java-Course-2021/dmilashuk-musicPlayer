@@ -16,7 +16,6 @@
         <dependency>
             <groupId>com.epam.brest</groupId>
             <artifactId>model</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

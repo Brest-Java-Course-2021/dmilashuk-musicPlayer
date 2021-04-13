@@ -1,4 +1,4 @@
-package com.epam.brest.rest.serviceImpl;
+package com.epam.brest.service.daoImpl;
 
 import com.epam.brest.dao.SongDao;
 import com.epam.brest.model.Song;
@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class RestSongServiceImpl implements SongService {
+public class SongServiceDaoImpl implements SongService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestSongServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SongServiceDaoImpl.class);
 
     private final SongDao songDao;
 
-    public RestSongServiceImpl(SongDao songDao) {
+    public SongServiceDaoImpl(SongDao songDao) {
         this.songDao = songDao;
     }
 

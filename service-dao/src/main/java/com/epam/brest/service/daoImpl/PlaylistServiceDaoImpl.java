@@ -1,4 +1,4 @@
-package com.epam.brest.rest.serviceImpl;
+package com.epam.brest.service.daoImpl;
 
 import com.epam.brest.dao.PlaylistDao;
 import com.epam.brest.model.Playlist;
@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class RestPlaylistServiceImpl implements PlaylistService {
+public class PlaylistServiceDaoImpl implements PlaylistService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestPlaylistServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlaylistServiceDaoImpl.class);
 
     private final PlaylistDao playlistDao;
 
-    public RestPlaylistServiceImpl(PlaylistDao playlistDao) {
+    public PlaylistServiceDaoImpl(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
 

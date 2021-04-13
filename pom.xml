@@ -21,6 +21,7 @@
         <module>rest-app</module>
         <module>web-app</module>
         <module>dao-Jdbc</module>
+        <module>service-dao</module>
     </modules>
 
     <properties>
@@ -39,6 +40,11 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>service-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>dao-Jdbc</artifactId>
