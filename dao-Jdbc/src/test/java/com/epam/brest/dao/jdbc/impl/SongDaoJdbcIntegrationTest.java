@@ -1,6 +1,6 @@
-package com.epam.brest.rest.daoImpl;
+package com.epam.brest.dao.jdbc.impl;
 
-import com.epam.brest.rest.config.RestDbConfigTest;
+import com.epam.brest.dao.jdbc.config.TestJdbcDbConfig;
 import com.epam.brest.model.Song;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@SpringJUnitConfig(RestDbConfigTest.class)
+@SpringJUnitConfig(TestJdbcDbConfig.class)
 public class SongDaoJdbcIntegrationTest {
 
     @Autowired

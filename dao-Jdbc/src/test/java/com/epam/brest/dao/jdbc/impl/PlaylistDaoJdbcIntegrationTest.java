@@ -1,7 +1,7 @@
-package com.epam.brest.rest.daoImpl;
+package com.epam.brest.dao.jdbc.impl;
 
+import com.epam.brest.dao.jdbc.config.TestJdbcDbConfig;
 import com.epam.brest.model.Playlist;
-import com.epam.brest.rest.config.RestDbConfigTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringJUnitConfig(RestDbConfigTest.class)
+@SpringJUnitConfig(TestJdbcDbConfig.class)
 public class PlaylistDaoJdbcIntegrationTest {
 
     //TODO instead @Sql annotations add @Transaction

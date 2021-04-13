@@ -1,4 +1,4 @@
-package com.epam.brest.rest.config;
+package com.epam.brest.dao.jdbc.config;
 
 import com.epam.brest.testDb.config.TestDbConfig;
 import org.slf4j.Logger;
@@ -13,11 +13,11 @@ import javax.sql.DataSource;
 
 @Configuration
 @Import(TestDbConfig.class)
-@ComponentScan(basePackages = "com.epam.brest.rest.daoImpl")
+@ComponentScan(basePackages = "com.epam.brest.dao.jdbc.impl")
 @PropertySource("classpath:jdbc.properties")
-public class RestDbConfigTest {
+public class TestJdbcDbConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestDbConfigTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestJdbcDbConfig.class);
 
     @Autowired
     private DataSource dataSource;

@@ -15,36 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("classpath:jdbc.properties")
-@ComponentScan(basePackages = {"com.epam.brest.rest.daoImpl", "com.epam.brest.rest.serviceImpl"})
+@ComponentScan("com.epam.brest.rest.serviceImpl")
 public class RestRootConfig {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(RestRootConfig.class);
-
-    @Bean
-    public DataSource dataSource(){
-        try {
-            EmbeddedDatabaseBuilder dbBuilder = new EmbeddedDatabaseBuilder();
-            LOGGER.debug("DBCP-Test DataSource was created");
-            return dbBuilder.setType(EmbeddedDatabaseType.H2)
-                    .addScript("classpath:schema.sql")
-                    .addScript("classpath:init-test-db.sql")
-                    .build();
-        } catch (Exception e){
-            LOGGER.error("Embedded DataSource cannot be created", e);
-            return null;
-        }
-    }
-
-    @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(){
-        LOGGER.debug("Bean namedParameterJdbcTemplate was created");
-        return new NamedParameterJdbcTemplate(dataSource());
-    }
-
-    @Bean
-    PlatformTransactionManager transactionManager(){
-        LOGGER.debug("Bean transactionManager was created");
-        return new DataSourceTransactionManager(dataSource());
-    }
 }

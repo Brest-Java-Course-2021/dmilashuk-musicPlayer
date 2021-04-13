@@ -1,5 +1,6 @@
 package com.epam.brest.rest.controllers;
 
+import com.epam.brest.dao.jdbc.config.DbConfig;
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.rest.config.RestRootConfig;
@@ -33,10 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @WebAppConfiguration
-@ContextConfiguration(classes = {RestWebConfig.class, RestRootConfig.class})
+@ContextConfiguration(classes = {RestWebConfig.class, RestRootConfig.class, DbConfig.class})
 class RestPlaylistControllerIntegrationTest {
-
-    //TODO configure mockMvc with StandaloneMockMvcBuilder
 
     private final Playlist playlist;
 

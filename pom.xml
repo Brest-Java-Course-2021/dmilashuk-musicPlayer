@@ -20,6 +20,7 @@
         <module>test-db</module>
         <module>rest-app</module>
         <module>web-app</module>
+        <module>dao-Jdbc</module>
     </modules>
 
     <properties>
@@ -38,6 +39,11 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>dao-Jdbc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>model</artifactId>

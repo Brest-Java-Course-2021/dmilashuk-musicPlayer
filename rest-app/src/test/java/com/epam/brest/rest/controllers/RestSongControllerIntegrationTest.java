@@ -1,5 +1,6 @@
 package com.epam.brest.rest.controllers;
 
+import com.epam.brest.dao.jdbc.config.DbConfig;
 import com.epam.brest.model.Song;
 import com.epam.brest.rest.config.RestRootConfig;
 import com.epam.brest.rest.config.RestWebConfig;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @WebAppConfiguration
-@ContextConfiguration(classes = {RestWebConfig.class, RestRootConfig.class})
+@ContextConfiguration(classes = {RestWebConfig.class, RestRootConfig.class, DbConfig.class})
 class RestSongControllerIntegrationTest {
 
     private final List<Song> list;
