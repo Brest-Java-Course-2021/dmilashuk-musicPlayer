@@ -48,7 +48,7 @@ You can import postman collection: [./documentation/music player.postman_collect
 ```
 * Inside the root tomcat folder create two new folders which names server8180 and 8181
 * Copy rest-app-1.0-SNAPSHOT.war into server8180 folder and web-app-1.0-SNAPSHOT.war into 8181 folder
-* Inside web-app-1.0-SNAPSHOT.war open /WEB-INF/classes/application.properties file and change the port number to 8180 
+* Inside web-app-1.0-SNAPSHOT.war open /WEB-INF/lib/service-rest-1.0-SNAPSHOT.jar file and then open restServer.properties. Change the port number to 8180 
 ![ChangePortNumber](documentation/img/ChangePortNumber.png)
 * Rename rest-app-1.0-SNAPSHOT.war and web-app-1.0-SNAPSHOT.war to ROOT.war. Structure:
 ![Structure](documentation/img/Structure.png)
