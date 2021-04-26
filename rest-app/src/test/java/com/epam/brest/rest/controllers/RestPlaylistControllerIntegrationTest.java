@@ -2,8 +2,6 @@ package com.epam.brest.rest.controllers;
 
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
-import com.epam.brest.rest.config.RestRootConfig;
-import com.epam.brest.rest.config.RestWebConfig;
 import com.epam.brest.rest.controllers.exception.CustomGlobalExceptionHandler;
 import com.epam.brest.service.PlaylistService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,11 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -31,15 +25,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
-@WebAppConfiguration
-@ContextConfiguration(classes = {RestWebConfig.class, RestRootConfig.class})
+@ExtendWith(MockitoExtension.class)
 class RestPlaylistControllerIntegrationTest {
 
     private final Playlist playlist;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Mock
     private PlaylistService playlistService;
