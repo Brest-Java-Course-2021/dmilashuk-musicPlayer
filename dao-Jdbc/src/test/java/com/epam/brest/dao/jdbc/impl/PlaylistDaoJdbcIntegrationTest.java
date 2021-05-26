@@ -17,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringJUnitConfig(TestJdbcDbConfig.class)
 public class PlaylistDaoJdbcIntegrationTest {
 
-    //TODO instead @Sql annotations add @Transaction
-
     @Autowired
     private PlaylistDaoJdbc playlistDaoJdbc;
 

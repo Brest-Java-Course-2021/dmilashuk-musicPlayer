@@ -25,10 +25,10 @@ public class DbConfig {
     public DataSource dataSource(){
         try {
             EmbeddedDatabaseBuilder dbBuilder = new EmbeddedDatabaseBuilder();
-            LOGGER.debug("DBCP-Test DataSource was created");
+            LOGGER.debug("Main dataSource was created");
             return dbBuilder.setType(EmbeddedDatabaseType.H2)
                     .addScript("classpath:schema.sql")
-                    .addScript("classpath:init-test-db.sql")
+                    .addScript("classpath:data.sql")
                     .build();
         } catch (Exception e){
             LOGGER.error("Embedded DataSource cannot be created", e);
