@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="../../../resources/static/css/bootstrap.css"
+    <link rel="stylesheet" href="../../static/css/bootstrap.css"
           th:href="@{/resources/static/css/bootstrap.css}">
-    <link rel="stylesheet" href="../../../resources/static/css/style.css"
+    <link rel="stylesheet" href="../../static/css/style.css"
           th:href="@{/resources/static/css/style.css}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <title>Playlists</title>
+    <title>Delete playlist</title>
 </head>
 <body>
 <header>
@@ -42,56 +42,42 @@
          class="ps-1 py-1 mb-3 navbar navbar-light bg-light text-dark">
         <ul class="navbar-nav float-start">
             <li class="nav-item" title="Back to list">
-                <a href="../playlists/changePlaylist.html"
-                   th:href="@{|/playlists/${playlistId}|}"
+                <a href="songs.html"
+                   th:href="@{/songs}"
                    class="btn btn-light btn-block">
                     <i class="bi-arrow-left"></i></a>
             </li>
         </ul>
-        <span class="navbar-brand text-uppercase me-auto">Add songs</span>
+        <span class="navbar-brand text-uppercase me-auto" >Delete song</span>
     </nav>
 </header>
 <section class="container-fluid">
-    <table class="table table-dark table-striped">
-        <thead>
-        <tr>
-            <th>Singer</th>
-            <th>Tittle</th>
-            <th class="d-none d-md-table-cell">Album</th>
-            <th class="d-none d-md-table-cell">Release date</th>
-            <th class=""></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="song : ${songs}">
-            <td th:text="${song.getSinger()}"
-                class="text-start">
-                Michael Jackson
-            </td>
-            <td th:text="${song.tittle}" >Billie jean</td>
-            <td th:text="${song.getAlbum()}" class="d-none d-md-table-cell">Thriller</td>
-            <td th:text="${#dates.format(song.getRealiseDate(), 'dd-MM-yyyy')}"
-                type="date" class="d-none d-md-table-cell">02-01-1983</td>
-            <td class="text-end">
-                <form th:method="POST"
-                      th:action="@{|/playlists/${playlistId}/${song.getSongId()}|}">
-                <button class="btn-sm btn-dark btn-outline-light" type="submit" title="Add song"  value="Add">
-                    <i class="bi bi-plus-square" style="font-size: 1rem;"></i>
-                    <span class="d-none d-md-inline">&nbsp;Add</span>
-                </button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</section>
+    <div class="card text-white bg-dark mb-3">
+        <form id="playlistForm"
+              th:method="DELETE"
+              th:action="@{|/songs/${song.getSongId()}|}">
+                <div class="mb-3">
+                    <p th:text="'Please confirm delete song:' + ${song.getSinger()} + '-' + ${song.getTittle()}">Please confirm delete playlist:</p>
+                </div>
 
+                <div class="d-flex justify-content-start">
+                    <a href="songs.html"
+                       th:href="@{/songs}"
+                       class="btn btn-dark btn-outline-light me-1"
+                       title="Cancel">Cancel</a>
+                    <input type="submit"
+                           class="btn btn-dark btn-outline-danger"
+                           title="Delete playlist"
+                           value="Delete"/>
+                </div>
+        </form>
+    </div>
+</section>
 <footer>
     <hr/>
     <p class="text px-3">&copy;2021</p>
 </footer>
-
-<script src="../../../resources/static/js/bootstrap.bundle.min.js"
+<script src="../../static/js/bootstrap.bundle.min.js"
         th:src="@{/resources/static/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
