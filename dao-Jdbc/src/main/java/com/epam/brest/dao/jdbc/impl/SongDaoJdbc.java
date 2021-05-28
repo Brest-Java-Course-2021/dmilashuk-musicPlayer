@@ -9,6 +9,7 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Repository
+@PropertySource("classpath:jdbc.properties")
 public class SongDaoJdbc implements SongDao, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SongDaoJdbc.class);

@@ -41,13 +41,13 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
+<!--            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
                 <version>5.3.7</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
+            </dependency>-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -228,15 +228,6 @@
                 </executions>
             </plugin>
             <!-- Embedded Jetty HTTP Server for testing war application -->
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>10.0.1</version>
-                <configuration>
-                    <stopKey>stop</stopKey>
-                    <stopPort>8089</stopPort>
-                </configuration>
-            </plugin>
 
 
             <plugin>

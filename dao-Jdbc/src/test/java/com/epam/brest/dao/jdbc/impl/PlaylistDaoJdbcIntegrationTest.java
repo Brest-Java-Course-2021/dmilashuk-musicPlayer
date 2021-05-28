@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(TestJdbcDbConfig.class)
+@Transactional
 public class PlaylistDaoJdbcIntegrationTest {
 
     @Autowired
@@ -29,23 +29,11 @@ public class PlaylistDaoJdbcIntegrationTest {
     private static final String SQL_CHECK_COUNT_PLAYLIST_SONG = "SELECT COUNT(PLAYLIST_ID) FROM PLAYLIST_SONG";
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:init-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:clean-up-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void findAllTest(){
         assertEquals(2, playlistDaoJdbc.findAll().size());
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:init-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:clean-up-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void findByIdTest(){
         Optional<Playlist> result = playlistDaoJdbc.findById(2);
         assertTrue(result.isPresent());
@@ -54,12 +42,6 @@ public class PlaylistDaoJdbcIntegrationTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:init-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:clean-up-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void createTest(){
         Playlist playlist = new Playlist();
         playlist.setPlaylistName("Good playlist");
@@ -70,12 +52,6 @@ public class PlaylistDaoJdbcIntegrationTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:init-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:clean-up-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void updateTest(){
         Playlist playlist = new Playlist();
         playlist.setPlaylistName("Good playlist");
@@ -92,12 +68,6 @@ public class PlaylistDaoJdbcIntegrationTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:init-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:clean-up-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void deleteTest(){
         assertEquals(1, playlistDaoJdbc.delete(2));
         assertEquals(2, template.queryForObject(SQL_CHECK_COUNT_PLAYLIST_SONG, new MapSqlParameterSource(), Integer.class));
@@ -105,12 +75,6 @@ public class PlaylistDaoJdbcIntegrationTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:init-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:clean-up-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void findWithSongsByIdTest(){
         Playlist playlist = playlistDaoJdbc.findWithSongsById(1).orElseThrow();
         assertNotNull(playlist);
@@ -120,12 +84,6 @@ public class PlaylistDaoJdbcIntegrationTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:init-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:clean-up-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void addSongIntoPlaylistByIdTest(){
         assertEquals(1, playlistDaoJdbc.addSongIntoPlaylistById(1,2));
         assertEquals(3, playlistDaoJdbc.findWithSongsById(1).orElseThrow().getSongs().size());
@@ -135,12 +93,6 @@ public class PlaylistDaoJdbcIntegrationTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:init-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:clean-up-test-db.sql",
-                    executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void removeSongFromPlaylistByIdTest(){
         assertEquals(1, playlistDaoJdbc.removeSongFromPlaylistById(1,3));
         assertEquals(1, playlistDaoJdbc.findWithSongsById(1).orElseThrow().getSongs().size());
