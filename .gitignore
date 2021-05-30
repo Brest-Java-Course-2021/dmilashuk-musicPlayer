@@ -1,3 +1,6 @@
+# Db store
+docker/mySql_data
+
 # Compiled class file
 *.class
 target
