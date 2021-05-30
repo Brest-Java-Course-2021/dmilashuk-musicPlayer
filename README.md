@@ -33,9 +33,9 @@ From the same directory as your root pom.xml, type:
 ```
 docker-compose -f docker/app-mySql.yml up
 ```
- The mySql database can be accessed at: [http://localhost:3306](http://localhost:3306)\
- The rest-app can be accessed at: [http://localhost:8080](http://localhost:8080)\
- The web-app can be accessed at: [http://localhost:8090](http://localhost:8090)
+The mySql database can be accessed at: [http://localhost:3306](http://localhost:3306)\
+The rest-app can be accessed at: [http://localhost:8080](http://localhost:8080)\
+The web-app can be accessed at: [http://localhost:8090](http://localhost:8090)
  
  To start/stop app use:
  ```
@@ -46,3 +46,7 @@ To stop it and remove the container, run:
  ```
  docker-compose -f docker/app-mySql.yml down
  ```
+
+## Swagger
+Swagger json documentation can be accessed at : [http://localhost:8080/v2/api-docs](http://localhost:8080/v2/api-docs) \
+Swagger UI can be accessed at : [http://localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/)

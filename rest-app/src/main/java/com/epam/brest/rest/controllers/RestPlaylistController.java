@@ -3,6 +3,8 @@ package com.epam.brest.rest.controllers;
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.service.PlaylistService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,7 +32,7 @@ public class RestPlaylistController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PlaylistDto>> findAll(){
+    public ResponseEntity<List<PlaylistDto>> findAll() {
         LOGGER.debug("RestPlaylistController: findAll()");
         List<PlaylistDto> resultList = playlistService.findAll();
         return new ResponseEntity<>(resultList, HttpStatus.OK);
@@ -38,8 +40,8 @@ public class RestPlaylistController {
 
     @GetMapping("/{playlistId}")
     public ResponseEntity<Playlist> findById(@PathVariable
-                                                 @Positive(message = "Path variable should be positive")
-                                                         Integer playlistId){
+                                             @Positive(message = "Path variable should be positive")
+                                                     Integer playlistId) {
         LOGGER.debug("RestPlaylistController: findById({})", playlistId);
         Optional<Playlist> result = playlistService.findById(playlistId);
         return result.map(playlist -> new ResponseEntity<>(playlist, HttpStatus.OK))
@@ -47,13 +49,13 @@ public class RestPlaylistController {
     }
 
     @PostMapping()
-    public ResponseEntity<Integer> create(@Valid @RequestBody Playlist playlist){
+    public ResponseEntity<Integer> create(@Valid @RequestBody Playlist playlist) {
         LOGGER.debug("RestPlaylistController: create({})", playlist);
         return new ResponseEntity<>(playlistService.create(playlist), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Object> update (@Valid @RequestBody Playlist playlist){
+    public ResponseEntity<Object> update(@Valid @RequestBody Playlist playlist) {
         LOGGER.debug("RestPlaylistController: update({})", playlist);
         return playlistService.update(playlist) != 0
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -61,9 +63,9 @@ public class RestPlaylistController {
     }
 
     @DeleteMapping("/{playlistId}")
-    public ResponseEntity<Object> delete (@PathVariable
-                                          @Positive(message = "Path variable should be positive")
-                                                  Integer playlistId){
+    public ResponseEntity<Object> delete(@PathVariable
+                                         @Positive(message = "Path variable should be positive")
+                                                 Integer playlistId) {
         LOGGER.debug("RestPlaylistController: delete({})", playlistId);
         return playlistService.delete(playlistId) != 0
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -72,8 +74,8 @@ public class RestPlaylistController {
 
     @GetMapping("/{playlistId}/withSongs")
     public ResponseEntity<Playlist> findByIdWithSongs(@PathVariable
-                                                                 @Positive(message = "Path variable should be positive")
-                                                                         Integer playlistId){
+                                                      @Positive(message = "Path variable should be positive")
+                                                              Integer playlistId) {
         LOGGER.debug("RestPlaylistController: findWithSongsById({})", playlistId);
         Optional<Playlist> result = playlistService.findWithSongsById(playlistId);
         return result.map(playlist -> new ResponseEntity<>(playlist, HttpStatus.OK))
