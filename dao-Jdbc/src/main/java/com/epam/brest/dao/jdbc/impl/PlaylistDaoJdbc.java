@@ -106,7 +106,7 @@ public class PlaylistDaoJdbc implements PlaylistDao, InitializingBean {
 
         SqlParameterSource parameterSource = new MapSqlParameterSource("PLAYLIST_NAME", playlist.getPlaylistName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        template.update(sqlCreate, parameterSource, keyHolder);
+        template.update(sqlCreate, parameterSource, keyHolder, new String[] { "playlist_id" });
 
         Integer playlistId = Objects.requireNonNull(keyHolder.getKey()).intValue();
         playlist.setPlaylistId(playlistId);

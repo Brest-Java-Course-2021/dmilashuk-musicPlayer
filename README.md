@@ -16,7 +16,7 @@ Database structure: [./documentation/Database structure.pdf](./documentation/Dat
 ```
 mvn clean install
 ```
-## Local tests
+## Local tests with H2 in-memory
 From the same directory as your root pom.xml, type:
 ```
 java -jar rest-app/target/rest-app-1.0-SNAPSHOT.jar
@@ -26,8 +26,24 @@ This starts Tomcat and serves up your rest-app project on [http://localhost:8080
 java -jar web-app/target/web-app-1.0-SNAPSHOT.jar 
 ```
 This starts Tomcat and serves up your web-app project on [http://localhost:8090](http://localhost:8090).
-## Local tests with Postman
-You can import postman collection: [./documentation/music player.postman_collection.json](./documentation/music%20player.postman_collection.json).
+## Run application with others databases
+Mysql require(can be customized in application-mysql.properties file): 
+* database - musicPlayer
+* user - root
+* password - password \
+Run with mysql:
+```
+java -jar -Dspring.profiles.active=mySql rest-app/target/rest-app-1.0-SNAPSHOT.jar
+```
+Postgres require(can be customized in application-postgres.properties file): 
+* database - musicPlayer
+* user - postgres
+* password - password \
+Run with postgres:
+```
+java -jar -Dspring.profiles.active=postgres rest-app/target/rest-app-1.0-SNAPSHOT.jar
+```
+
 ## Run application with docker-compose and mySql database
 From the same directory as your root pom.xml, type:
 ```
@@ -46,6 +62,8 @@ To stop it and remove the container, run:
  ```
  docker-compose -f docker/app-mySql.yml down
  ```
+## Local tests with Postman
+You can import postman collection: [./documentation/music player.postman_collection.json](./documentation/music%20player.postman_collection.json).
 
 ## Swagger
 Swagger json documentation can be accessed at : [http://localhost:8080/v2/api-docs](http://localhost:8080/v2/api-docs) \

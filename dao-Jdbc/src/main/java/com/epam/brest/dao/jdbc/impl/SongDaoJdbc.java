@@ -122,7 +122,7 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
                 .addValue("TITTLE", song.getTittle())
                 .addValue("ALBUM", song.getAlbum())
                 .addValue("REALISE_DATE", song.getRealiseDate());
-        template.update(sqlCreate, parameterSource, keyHolder);
+        template.update(sqlCreate, parameterSource, keyHolder, new String[] { "song_id" });
 
         Integer songId = Objects.requireNonNull(keyHolder.getKey()).intValue();
         song.setSongId(songId);
