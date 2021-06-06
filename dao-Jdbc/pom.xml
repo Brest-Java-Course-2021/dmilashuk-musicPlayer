@@ -19,10 +19,6 @@
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
-            <artifactId>model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.epam.brest</groupId>
             <artifactId>test-db</artifactId>
         </dependency>
         <dependency>

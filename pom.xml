@@ -205,15 +205,6 @@
         <plugins>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.3</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.6</version>
@@ -232,8 +223,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Embedded Jetty HTTP Server for testing war application -->
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

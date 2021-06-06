@@ -25,7 +25,6 @@ class PlaylistServiceDaoImplTest {
     @InjectMocks
     private PlaylistServiceDaoImpl playlistService;
 
-
     @Test
     void findAll() {
         List<PlaylistDto> playlistList= Collections.singletonList(new PlaylistDto());
