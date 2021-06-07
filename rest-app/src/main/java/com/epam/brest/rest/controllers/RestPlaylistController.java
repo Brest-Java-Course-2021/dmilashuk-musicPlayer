@@ -3,8 +3,6 @@ package com.epam.brest.rest.controllers;
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.service.PlaylistService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
