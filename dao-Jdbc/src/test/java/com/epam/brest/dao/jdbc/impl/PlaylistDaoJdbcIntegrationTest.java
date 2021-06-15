@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringJUnitConfig(TestJdbcDbConfig.class)
 @Transactional
 public class PlaylistDaoJdbcIntegrationTest {
-
     @Autowired
     private PlaylistDaoJdbc playlistDaoJdbc;
 

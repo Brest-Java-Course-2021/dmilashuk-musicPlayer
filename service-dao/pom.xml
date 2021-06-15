@@ -42,5 +42,4 @@
             <artifactId>mockito-junit-jupiter</artifactId>
         </dependency>
     </dependencies>
-
 </project>
