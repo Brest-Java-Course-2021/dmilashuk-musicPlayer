@@ -26,6 +26,11 @@ This starts Tomcat and serves up your rest-app project on [http://localhost:8080
 java -jar web-app/target/web-app-1.0-SNAPSHOT.jar 
 ```
 This starts Tomcat and serves up your web-app project on [http://localhost:8090](http://localhost:8090).
+### It is possible to run openapi generated rest-app-openapi instead rest-app with next command:
+```
+java -jar rest-app-openapi/target/rest-app-openapi-1.0-SNAPSHOT.jar 
+```
+This starts Tomcat and serves up your rest-app project on [http://localhost:8080](http://localhost:8080).
 ## Run application with others databases
 Mysql require(can be customized in application-mysql.properties file): 
 * database - musicPlayer

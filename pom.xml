@@ -23,6 +23,8 @@
         <module>dao-Jdbc</module>
         <module>service-dao</module>
         <module>service-rest</module>
+        <module>rest-app-openapi-specification</module>
+        <module>rest-app-openapi</module>
     </modules>
 
     <properties>
@@ -38,6 +40,7 @@
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <mockito.version>3.8.0</mockito.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+        <spring-boot-maven-plugin.version>2.5.0</spring-boot-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -77,6 +80,16 @@
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>service-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>rest-app-openApi-specification</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>rest-app-openapi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -204,19 +217,24 @@
                 <version>7.10.0</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven-failsafe-plugin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>0.2.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
+
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
