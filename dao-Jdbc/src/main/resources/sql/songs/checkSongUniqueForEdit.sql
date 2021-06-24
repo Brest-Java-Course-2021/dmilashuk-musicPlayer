@@ -1,0 +1,2 @@
+SELECT COUNT(SONG_ID) FROM (SELECT * FROM SONG WHERE SONG_ID != :SONG_ID) AS S WHERE LOWER(SINGER) = LOWER(:SINGER)
+                                                                                 AND LOWER(TITTLE) = LOWER(:TITTLE)

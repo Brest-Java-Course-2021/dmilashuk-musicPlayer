@@ -2,16 +2,19 @@ package com.epam.brest.openapi.delegateImpl;
 
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
-import com.epam.brest.openapi.ApplicationOpenAPI;
+import com.epam.brest.openapi.api.PlaylistsApiController;
+import com.epam.brest.openapi.exception.CustomGlobalExceptionHandler;
 import com.epam.brest.service.PlaylistService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,25 +26,32 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = ApplicationOpenAPI.class)
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 class PlaylistsDelegateIntegrationTest {
-
     private final Playlist playlist;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @MockBean
+    @Mock
     private PlaylistService playlistService;
 
-    @Autowired
+    @InjectMocks
+    private PlaylistsDelegate playlistsDelegate;
+
     private MockMvc mockMvc;
 
     {
         Playlist playlist = new Playlist();
         playlist.setPlaylistName("New playlist");
         this.playlist = playlist;
+    }
+
+    @BeforeEach
+    public void setup(){
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(new PlaylistsApiController(playlistsDelegate))
+                .setControllerAdvice(new CustomGlobalExceptionHandler())
+                .build();
     }
 
     @Test

@@ -1,17 +1,20 @@
 package com.epam.brest.openapi.delegateImpl;
 
 import com.epam.brest.model.Song;
-import com.epam.brest.openapi.ApplicationOpenAPI;
+import com.epam.brest.openapi.api.SongsApiController;
+import com.epam.brest.openapi.exception.CustomGlobalExceptionHandler;
 import com.epam.brest.service.SongService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -24,21 +27,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = ApplicationOpenAPI.class)
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 class SongsDelegateIntegrationTest {
-
     private final List<Song> list;
 
     private final Song song;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @MockBean
+    @Mock
     private SongService songService;
 
-    @Autowired
+    @InjectMocks
+    private SongsDelegate songsDelegate;
+
     private MockMvc mockMvc;
 
     {
@@ -49,6 +51,14 @@ class SongsDelegateIntegrationTest {
         song2.setSinger("Singer2");
         this.list = Arrays.asList(song1, song2);
         this.song = song1;
+    }
+
+    @BeforeEach
+    public void setup(){
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(new SongsApiController(songsDelegate))
+                .setControllerAdvice(new CustomGlobalExceptionHandler())
+                .build();
     }
 
     @Test

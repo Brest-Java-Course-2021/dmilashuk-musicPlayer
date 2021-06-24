@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @Import(TestDbConfig.class)
-@ComponentScan(basePackages = "com.epam.brest.dao.jdbc.impl")
+@ComponentScan(basePackages = "com.epam.brest")
 public class TestJdbcDbConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestJdbcDbConfig.class);
