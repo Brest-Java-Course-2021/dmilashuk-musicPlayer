@@ -90,7 +90,7 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
-                <artifactId>rest-app-openApi-specification</artifactId>
+                <artifactId>rest-app-openapi-specification</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
