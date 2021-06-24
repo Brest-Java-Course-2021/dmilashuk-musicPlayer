@@ -3,6 +3,7 @@ package com.epam.brest.rest.controllers;
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.service.PlaylistService;
+import com.github.javafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -27,6 +29,23 @@ public class RestPlaylistController {
 
     public RestPlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
+    }
+
+
+    @GetMapping("/fill")
+    public ResponseEntity<Object> fillDatabase (@RequestParam(name = "nb", required = false) Integer number,
+                                                @RequestParam(name = "lg", required = false) String language){
+        int i = (number != null) ? number : 1;
+        Locale locale = new Locale((language != null) ? language : "en");
+        while (i > 0){
+            Playlist playlist = new Playlist();
+            playlist.setPlaylistName(new Faker(locale).book().title());
+            try {
+                playlistService.create(playlist);
+            } catch (Throwable e){}
+            i--;
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping

@@ -15,12 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -235,5 +233,16 @@ class RestPlaylistControllerIntegrationTest {
         verifyNoMoreInteractions(playlistService);
     }
 
+    @Test
+    public void fillDatabase () throws Exception {
+        when(playlistService.create(any(Playlist.class))).thenReturn(1);
 
+        mockMvc.perform(get("/playlists/fill")
+                .param("nb","20"))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        verify(playlistService, times(20)).create(any(Playlist.class));
+        verifyNoMoreInteractions(playlistService);
+    }
 }

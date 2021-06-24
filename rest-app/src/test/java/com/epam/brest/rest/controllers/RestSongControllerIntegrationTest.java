@@ -280,4 +280,17 @@ class RestSongControllerIntegrationTest {
         verifyNoMoreInteractions(songService);
     }
 
+    @Test
+    public void fillDatabase () throws Exception {
+        when(songService.create(any(Song.class))).thenReturn(1);
+
+        mockMvc.perform(get("/songs/fill")
+                .param("nb","20"))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        verify(songService, times(20)).create(any(Song.class));
+        verifyNoMoreInteractions(songService);
+    }
+
 }

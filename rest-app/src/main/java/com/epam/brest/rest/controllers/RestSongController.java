@@ -2,6 +2,7 @@ package com.epam.brest.rest.controllers;
 
 import com.epam.brest.model.Song;
 import com.epam.brest.service.SongService;
+import com.github.javafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +15,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @Validated
@@ -27,6 +30,25 @@ public class RestSongController {
 
     public RestSongController(SongService songService) {
         this.songService = songService;
+    }
+
+    @GetMapping("/fill")
+    public ResponseEntity<Object> fillDatabase (@RequestParam(name = "nb", required = false) Integer number,
+                                                @RequestParam(name = "lg", required = false) String language){
+        int i = (number != null) ? number : 1;
+        Locale locale = new Locale((language != null) ? language : "en");
+        while (i > 0){
+            Faker faker = new Faker(locale);
+            Song song = new Song();
+            song.setTittle(faker.book().title());
+            song.setSinger(faker.rockBand().name());
+            song.setAlbum(faker.music().genre());
+            try {
+                songService.create(song);
+            } catch (Throwable e){}
+            i--;
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
