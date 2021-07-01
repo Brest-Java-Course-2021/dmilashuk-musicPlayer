@@ -14,11 +14,6 @@ public class DataAccessAnnotationProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        return bean;
-    }
-
     protected void scanDataAccessAnnotation(Object bean) {
         this.configureFieldInjection(bean);
     }

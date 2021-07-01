@@ -37,39 +37,39 @@ public class SongDaoJdbc implements SongDao, InitializingBean {
     private final RowMapper<Song> songRowMapper = BeanPropertyRowMapper.newInstance(Song.class);
 
 //    @Value("${sql.song.findAllSongs}")
-    @InjectSQL(path = "/sql/songs/findAllSongs.sql")
+    @InjectSQL("/sql/songs/findAllSongs.sql")
     private String sqlFindAllSongs;
 
 //    @Value("${sql.song.findAllSongWithoutPlaylist}")
-    @InjectSQL(path = "/sql/songs/findAllSongWithoutPlaylist.sql")
+    @InjectSQL("/sql/songs/findAllSongWithoutPlaylist.sql")
     private String sqlFindAllSongWithoutPlaylist;
 
 //    @Value("${sql.song.findAllSongsByFilter}")
-    @InjectSQL(path = "/sql/songs/findAllSongsByFilter.sql")
+    @InjectSQL("/sql/songs/findAllSongsByFilter.sql")
     private String sqlFindAllSongsByFilter;
 
 //    @Value("${sql.song.findById}")
-    @InjectSQL(path = "/sql/songs/findById.sql")
+    @InjectSQL("/sql/songs/findById.sql")
     private String sqlFindById;
 
 //    @Value("${sql.song.create}")
-    @InjectSQL(path = "/sql/songs/create.sql")
+    @InjectSQL("/sql/songs/create.sql")
     private String sqlCreate;
 
 //    @Value("${sql.song.update}")
-    @InjectSQL(path = "/sql/songs/update.sql")
+    @InjectSQL("/sql/songs/update.sql")
     private String sqlUpdate;
 
 //    @Value("${sql.song.delete}")
-    @InjectSQL(path = "/sql/songs/delete.sql")
+    @InjectSQL("/sql/songs/delete.sql")
     private String sqlDelete;
 
 //    @Value("${sql.song.checkSongUnique}")
-    @InjectSQL(path = "/sql/songs/checkSongUnique.sql")
+    @InjectSQL("/sql/songs/checkSongUnique.sql")
     private String sqlCheckSongUnique;
 
 //    @Value("${sql.song.checkSongUniqueForEdit}")
-    @InjectSQL(path = "/sql/songs/checkSongUniqueForEdit.sql")
+    @InjectSQL("/sql/songs/checkSongUniqueForEdit.sql")
     private String sqlCheckSongUniqueForEdit;
 
     @Autowired

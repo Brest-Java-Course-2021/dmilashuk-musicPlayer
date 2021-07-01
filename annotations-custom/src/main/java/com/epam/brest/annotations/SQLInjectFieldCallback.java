@@ -1,13 +1,15 @@
 package com.epam.brest.annotations;
 
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 
@@ -26,16 +28,15 @@ public class SQLInjectFieldCallback implements ReflectionUtils.FieldCallback {
         if (!field.isAnnotationPresent(InjectSQL.class)){
             return;
         }
-        String path = field.getAnnotation(InjectSQL.class).path();
+        String path = field.getAnnotation(InjectSQL.class).value();
         String sql;
         ReflectionUtils.makeAccessible(field);
-        try {
-            sql = FileUtils.readFileToString(new ClassPathResource(path).getFile(), StandardCharsets.UTF_8);
+        try (Reader reader = new InputStreamReader(new ClassPathResource(path).getInputStream(), StandardCharsets.UTF_8)) {
+            sql = FileCopyUtils.copyToString(reader);
         } catch (IOException e) {
             LOGGER.warn("Unable to read the file {}", path);
             throw new IllegalArgumentException("Unable to read the file" + path, e);
         }
-        field.set(bean,sql);
+        field.set(bean, sql);
     }
-
 }
