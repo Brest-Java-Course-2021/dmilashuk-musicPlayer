@@ -14,7 +14,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.epam" level = "DEBUG">
+    <logger name="com.epam.brest" level = "DEBUG">
         <appender-ref ref="FILE"/>
     </logger>
 

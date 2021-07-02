@@ -1,5 +1,8 @@
 package com.epam.brest.rest.controllers;
 
+import com.epam.brest.kafka.model.EventType;
+import com.epam.brest.kafka.model.SongEvent;
+import com.epam.brest.kafka.writeProducer.service.KafkaWriteSongProducerService;
 import com.epam.brest.model.Song;
 import com.epam.brest.service.SongService;
 import com.github.javafaker.Faker;
@@ -17,7 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @Validated
@@ -28,8 +30,11 @@ public class RestSongController {
 
     private final SongService songService;
 
-    public RestSongController(SongService songService) {
+    private final KafkaWriteSongProducerService kafkaSongProducerService;
+
+    public RestSongController(SongService songService, KafkaWriteSongProducerService kafkaSongProducerService) {
         this.songService = songService;
+        this.kafkaSongProducerService = kafkaSongProducerService;
     }
 
     @GetMapping("/fill")
@@ -88,17 +93,21 @@ public class RestSongController {
     }
 
     @PostMapping()
-    public ResponseEntity<Integer> create (@Valid @RequestBody Song song){
+    public ResponseEntity<Object> create (@Valid @RequestBody Song song){
         LOGGER.debug("RestSongController: create({})", song);
-        return new ResponseEntity<>(songService.create(song), HttpStatus.CREATED);
+        kafkaSongProducerService.sendEvent(new SongEvent(EventType.CREATE, song));
+        return new ResponseEntity<>(HttpStatus.CREATED);
+//        return new ResponseEntity<>(songService.create(song), HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<Object> update (@Valid @RequestBody Song song){
         LOGGER.debug("RestSongController: update({})", song);
-        return songService.update(song) !=0
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        kafkaSongProducerService.sendEvent(new SongEvent(EventType.UPDATE, song));
+        return new ResponseEntity<>(HttpStatus.OK);
+//        return songService.update(song) !=0
+//                ? new ResponseEntity<>(HttpStatus.OK)
+//                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{songId}")
@@ -106,9 +115,14 @@ public class RestSongController {
                                                @Positive(message = "Path variable should be positive")
                                                        Integer songId){
         LOGGER.debug("RestSongController: delete({})", songId);
+        Song song = new Song();
+        song.setSongId(songId);
+        kafkaSongProducerService.sendEvent(new SongEvent(EventType.DELETE, song));
+        return new ResponseEntity<>(HttpStatus.OK);
+/*        LOGGER.debug("RestSongController: delete({})", songId);
         return songService.delete(songId) != 0
                 ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);*/
     }
 
 }

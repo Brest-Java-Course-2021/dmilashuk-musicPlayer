@@ -46,7 +46,7 @@ public class SongDaoJdbcIntegrationTest {
     public void findByIdTest() {
         Optional<Song> result = songDaoJdbc.findById(3);
         assertTrue(result.isPresent());
-        assertEquals(3,result.get().getSongId());
+        assertEquals(3,result.get().getSongId() );
         assertTrue(songDaoJdbc.findById(999).isEmpty());
     }
 
