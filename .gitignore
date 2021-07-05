@@ -1,5 +1,6 @@
 # Db store
 docker/mySql_data
+docker/zk-single-kafka-multiple
 
 # Compiled class file
 *.class

@@ -25,8 +25,8 @@ public class KafkaReadSongConsumer {
     }
 
     @KafkaListener(topics = "songEvents")
-    public void listenGroupFoo(SongEvent songEvent) {
-        LOGGER.debug("listenGroupFoo({})", songEvent);
+    public void listenGroupSongEvents(SongEvent songEvent) {
+        LOGGER.debug("listenGroupSongEvents({})", songEvent);
         switch (songEvent.getEventType()){
             case  CREATE:
                 LOGGER.debug("CREATE:{}", songEvent.getSong());

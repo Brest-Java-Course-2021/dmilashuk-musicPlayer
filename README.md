@@ -16,60 +16,19 @@ Database structure: [./documentation/Database structure.pdf](./documentation/Dat
 ```
 mvn clean install
 ```
-## Local tests with H2 in-memory
+## Local tests with mysql and kafka
 From the same directory as your root pom.xml, type:
 ```
-java -jar rest-app/target/rest-app-1.0-SNAPSHOT.jar
+docker-compose -f docker/app-mySql-kafka.yml up
 ```
-This starts Tomcat and serves up your rest-app project on [http://localhost:8080](http://localhost:8080).
+This starts Zookeeper on [http://localhost:2181](http://localhost:2181).\
+This starts three kafka brokers on
+[http://localhost:9092](http://localhost:9092), [http://localhost:9093](http://localhost:9093), [http://localhost:9094](http://localhost:9094).\
+This starts Tomcat and serves up your rest-app project on [http://localhost:8080](http://localhost:8080).\
+This starts Tomcat and serves up your kafka-consumer-dao project on [http://localhost:8095](http://localhost:8095).\
+This starts Tomcat and serves up your web-app project on [http://localhost:8090](http://localhost:8090).\
 ```
-java -jar web-app/target/web-app-1.0-SNAPSHOT.jar 
+docker-compose -f docker/app-mySql-kafka.yml down
 ```
-This starts Tomcat and serves up your web-app project on [http://localhost:8090](http://localhost:8090).
-### It is possible to run openapi generated rest-app-openapi instead rest-app with next command:
-```
-java -jar rest-app-openapi/target/rest-app-openapi-1.0-SNAPSHOT.jar 
-```
-This starts Tomcat and serves up your rest-app project on [http://localhost:8080](http://localhost:8080).
-## Run application with others databases
-Mysql require(can be customized in application-mysql.properties file): 
-* database - musicPlayer
-* user - root
-* password - password \
-Run with mysql:
-```
-java -jar -Dspring.profiles.active=mySql rest-app/target/rest-app-1.0-SNAPSHOT.jar
-```
-Postgres require(can be customized in application-postgres.properties file): 
-* database - musicPlayer
-* user - postgres
-* password - password \
-Run with postgres:
-```
-java -jar -Dspring.profiles.active=postgres rest-app/target/rest-app-1.0-SNAPSHOT.jar
-```
+TThis stop all servers and delete containers.
 
-## Run application with docker-compose and mySql database
-From the same directory as your root pom.xml, type:
-```
-docker-compose -f docker/app-mySql.yml up
-```
-The mySql database can be accessed at: [http://localhost:3306](http://localhost:3306)\
-The rest-app can be accessed at: [http://localhost:8080](http://localhost:8080)\
-The web-app can be accessed at: [http://localhost:8090](http://localhost:8090)
- 
- To start/stop app use:
- ```
- docker-compose -f docker/app-mySql.yml start
- docker-compose -f docker/app-mySql.yml stop
- ```
-To stop it and remove the container, run:
- ```
- docker-compose -f docker/app-mySql.yml down
- ```
-## Local tests with Postman
-You can import postman collection: [./documentation/music player.postman_collection.json](./documentation/music%20player.postman_collection.json).
-
-## Swagger
-Swagger json documentation can be accessed at : [http://localhost:8080/v2/api-docs](http://localhost:8080/v2/api-docs) \
-Swagger UI can be accessed at : [http://localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/)

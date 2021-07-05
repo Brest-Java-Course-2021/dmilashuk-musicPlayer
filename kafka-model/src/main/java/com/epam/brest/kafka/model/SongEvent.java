@@ -7,6 +7,9 @@ public class SongEvent {
     private EventType eventType;
     private Song song;
 
+    public SongEvent() {
+    }
+
     public SongEvent(EventType eventType, Song song) {
         this.eventType = eventType;
         this.song = song;
