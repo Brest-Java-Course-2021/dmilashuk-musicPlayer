@@ -35,7 +35,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic topic1() {
-        NewTopic topic =  new NewTopic(topic1, 2, (short) 1);
+        NewTopic topic =  new NewTopic(topic1, 3, (short) 2);
         LOGGER.debug("Kafka topic: {} was created", topic1);
         return topic;
     }
