@@ -16,7 +16,7 @@ Database structure: [./documentation/Database structure.pdf](./documentation/Dat
 ```
 mvn clean install
 ```
-## Local tests with mysql and kafka
+## Start/stop application with mysql database and kafka
 From the same directory as your root pom.xml, type:
 ```
 docker-compose -f docker/app-mySql-kafka.yml up
@@ -27,8 +27,13 @@ This starts three kafka brokers on
 This starts Tomcat and serves up your rest-app project on [http://localhost:8080](http://localhost:8080).\
 This starts Tomcat and serves up your kafka-consumer-dao project on [http://localhost:8095](http://localhost:8095).\
 This starts Tomcat and serves up your web-app project on [http://localhost:8090](http://localhost:8090).\
+Then start/stop container commands:
+```
+docker-compose -f docker/app-mySql-kafka.yml start
+docker-compose -f docker/app-mySql-kafka.yml stop
+```
+Stop and delete all containers:
 ```
 docker-compose -f docker/app-mySql-kafka.yml down
 ```
-TThis stop all servers and delete containers.
 
