@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  rest-app:
+    build: ../rest-app
+    image: docker-rest-app
+    container_name: rest-app
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      DB_HOSTNAME: db
+
+  web-app:
+    build: ../web-app
+    image: docker-web-app
+    container_name: web-app
+    ports:
+      - 8090:8090
+    restart: always
+    environment:
+      HOST_NAME: rest-app
+    depends_on:
+      - rest-app
+    command: [ "./wait-for-it.sh", "rest-app:8080", "--","java", "-jar", "app.jar" ]
