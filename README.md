@@ -62,6 +62,23 @@ To stop it and remove the container, run:
  ```
  docker-compose -f docker/app-mySql.yml down
  ```
+## Run application with Kubernates
+To run this method, you need to configure kubectl, which is connected to the running kubernetes cluster.
+Use these commands in the correct order from the root directory to run pods:
+```
+./kubernates/createPods.sh
+```
+Now you need to get the correct URL to access the application.
+If you use minikube then enter this command:
+```
+minikube service web-app-secrvice
+```
+Otherwise :
+```
+kubectl get services
+```
+Use EXTERNAL-IP:30000 url of web-app-secrvice.
+
 ## Local tests with Postman
 You can import postman collection: [./documentation/music player.postman_collection.json](./documentation/music%20player.postman_collection.json).
 

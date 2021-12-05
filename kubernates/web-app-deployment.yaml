@@ -1,0 +1,43 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: web-app-deployment
+  labels:
+    app: web-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+        - name: web-app
+          image: ilovehardrock/web-app
+          ports:
+            - containerPort: 8090
+          env:
+            - name: HOST_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: music-player-configmap
+                  key: rest_host_name
+          command: ["java", "-jar", "app.jar"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-secrvice
+spec:
+  selector:
+    app: web-app
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8090
+      targetPort: 8090
+      nodePort: 30000

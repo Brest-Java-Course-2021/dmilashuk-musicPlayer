@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: music-player-configmap
+data:
+  database_host: mysql-secrvice
+  rest_host_name: rest-app-secrvice
