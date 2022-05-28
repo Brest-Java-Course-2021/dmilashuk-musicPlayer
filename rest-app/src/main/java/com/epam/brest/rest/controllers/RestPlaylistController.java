@@ -3,6 +3,8 @@ package com.epam.brest.rest.controllers;
 import com.epam.brest.model.Playlist;
 import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.service.PlaylistService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,16 +23,23 @@ import java.util.Optional;
 @RequestMapping("/playlists")
 public class RestPlaylistController {
 
+    private final Counter counter;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RestSongController.class);
 
     private final PlaylistService playlistService;
 
-    public RestPlaylistController(PlaylistService playlistService) {
+    public RestPlaylistController(PlaylistService playlistService, MeterRegistry meterRegistry) {
         this.playlistService = playlistService;
+        this.counter = Counter
+                .builder("hit_counter")
+                .description("Number of Hits")
+                .register(meterRegistry);
     }
 
     @GetMapping
     public ResponseEntity<List<PlaylistDto>> findAll() {
+        counter.increment();
         LOGGER.debug("RestPlaylistController: findAll()");
         List<PlaylistDto> resultList = playlistService.findAll();
         return new ResponseEntity<>(resultList, HttpStatus.OK);

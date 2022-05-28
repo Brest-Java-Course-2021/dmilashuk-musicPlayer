@@ -5,6 +5,7 @@ import com.epam.brest.model.PlaylistDto;
 import com.epam.brest.rest.controllers.exception.CustomGlobalExceptionHandler;
 import com.epam.brest.service.PlaylistService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,8 @@ class RestPlaylistControllerIntegrationTest {
     @BeforeEach
     public void setup(){
         this.mockMvc = MockMvcBuilders
-                .standaloneSetup(new RestPlaylistController(playlistService))
+                .standaloneSetup(new RestPlaylistController(playlistService, new LoggingMeterRegistry() {
+                }))
                 .setControllerAdvice(new CustomGlobalExceptionHandler())
                 .build();
     }
