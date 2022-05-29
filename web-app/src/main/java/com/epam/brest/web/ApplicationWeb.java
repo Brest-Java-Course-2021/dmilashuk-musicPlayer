@@ -1,6 +1,8 @@
 package com.epam.brest.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.metrics.web.client.MetricsRestTemplateCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,6 +15,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan(basePackages = "com.epam.brest")
 public class ApplicationWeb implements WebMvcConfigurer {
 
+    @Autowired
+    private MetricsRestTemplateCustomizer metricsRestTemplateCustomizer;
+
     public static void main(String[] args) {
         SpringApplication.run(ApplicationWeb.class, args);
     }
@@ -24,7 +29,9 @@ public class ApplicationWeb implements WebMvcConfigurer {
 
     @Bean
     RestTemplate restTemplate() {
-        return new RestTemplate(new SimpleClientHttpRequestFactory());
+        RestTemplate restTemplate = new RestTemplate(new SimpleClientHttpRequestFactory());
+        metricsRestTemplateCustomizer.customize(restTemplate);
+        return restTemplate;
     }
 
 }
